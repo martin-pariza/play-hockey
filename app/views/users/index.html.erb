@@ -1,0 +1,10 @@
+<% provide(:title, 'All users') %>
+<h1>All users</h1>
+
+<%= will_paginate %> <!-- This covers bootstrap pagination, needed at beginning and end as well -->
+
+<ul class="users">
+  <%= render @users %> <!-- This automatically renders all users in @users using _user.html.erb partial -->
+</ul>
+
+<%= will_paginate %> <!-- This covers bootstrap pagination, needed at beginning and end as well -->
