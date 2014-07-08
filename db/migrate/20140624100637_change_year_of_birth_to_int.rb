@@ -1,5 +1,6 @@
 class ChangeYearOfBirthToInt < ActiveRecord::Migration
   def change
-    change_column :users, :year_of_birth, 'integer USING CAST(year_of_birth AS integer)'
+    remove_column :users, :year_of_birth
+    add_column :users, :year_of_birth, :integer
   end
 end
