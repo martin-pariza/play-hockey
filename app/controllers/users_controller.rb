@@ -31,8 +31,8 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     
-    @next_matches = @user.matches.where('date_of_play > (?)', Date.current())
-    @past_matches = @user.matches.where('date_of_play <= (?)', Date.current()).paginate(page: params[:page], per_page: 5)
+    @next_matches = @user.matches.where('date_of_play > (?)', Date.current()).order(date_of_play: :desc)
+    @past_matches = @user.matches.where('date_of_play <= (?)', Date.current()).order(date_of_play: :desc).paginate(page: params[:page], per_page: 5)
   end
 
 
@@ -72,25 +72,15 @@ class UsersController < ApplicationController
         :lastname,
         :name_suffix,
         :email,
-        :password,
-        :password_confirmation,
         :phone_nr,
         :year_of_birth,
-        :residence
+        :plays_since,
+        :residence,
+        :password,
+        :password_confirmation
       )
     end
 
-    def user_params_without_password
-      params.require(:user).permit(
-        :firstname,
-        :lastname,
-        :name_suffix,
-        :email,
-        :phone_nr,
-        :year_of_birth,
-        :residence
-      )
-    end
 
 
 

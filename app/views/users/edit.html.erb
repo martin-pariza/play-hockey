@@ -24,7 +24,6 @@
   <%= form_for(@user) do |f| %>
     <%= render 'shared/error_messages', target: @user %>
     <%= render 'fields', f: f %>
-    <%= render 'additional_fields', f: f %>
     <div id="show-change-password" class="btn btn-default center-button">Zmeniť heslo</div>
     <div id="change-password">
       <%= render 'password_fields', f: f, 

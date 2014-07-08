@@ -17,12 +17,10 @@
       <% if @user.admin? %>
         (administrator)<br/>
       <% end %>
-      <span class="line-label">č. tel </span><strong> • <%= @user.phone_nr %></strong><br/>
       <span class="line-label">email </span><strong> • <%= @user.email %></strong><br/>
+      <span class="line-label">č. tel </span><strong> • <%= @user.phone_nr %></strong><br/>
       <span class="line-label">rok nar. </span><strong> • <%= @user.year_of_birth %></strong><br/>
-      <% if !@user.plays_since.nil? %>
-        <span class="line-label">hrá od </span><strong> • <%= @user.plays_since %></strong><br/>
-      <% end %>
+      <span class="line-label">hrá od </span><strong> • <%= @user.plays_since %></strong><br/>
       <span class="line-label">bydlisko </span><strong> • <%= @user.residence %></strong><br/>
     </p>
   </div><!-- detail-info -->

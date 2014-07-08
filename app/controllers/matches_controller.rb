@@ -1,6 +1,7 @@
 class MatchesController < ApplicationController
 
   before_action :verify_user_is_admin, only: [ :new, :create, :edit, :update, :destroy ]
+  
 
   def index
     @matches = Match.order(date_of_play: :desc).paginate(page: params[:page], per_page: 5)
