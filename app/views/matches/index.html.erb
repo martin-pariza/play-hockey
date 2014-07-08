@@ -1,0 +1,28 @@
+<script>
+  $(document).ready(function(){
+    ActivateTab('tab-matches');
+  });
+</script>
+
+
+
+
+<% provide(:title, 'Zápasy') %>
+<% if current_user && current_user.admin? %>
+  <%= link_to "Naplánovať nový zápas", new_match_path, class: "btn btn-default back-link" %>
+<% end %>
+<div class="jumbotron content">
+  
+  <h2>Zápasy</h2>
+  <div class="caption-delimiter"></div>
+  <ul class="wide">
+    <%= render @matches %> <!-- This automatically renders all matches in @matches using _match.html.erb partial -->
+  </ul>
+
+  <div class="text-center">
+    <%= will_paginate %> <!-- This covers bootstrap pagination, needed at beginning and end as well -->
+  </div>
+</div>
+
+
+

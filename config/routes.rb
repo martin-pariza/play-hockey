@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
 
   resources :users
+  resources :matches
 
+  
   root 'static_pages#home'
   match '/signup',  to: 'users#new',            via: 'get'
   match '/help',    to: 'static_pages#help',    via: 'get'
@@ -12,6 +14,18 @@ Rails.application.routes.draw do
   resources :sessions, only: [ :new, :create, :destroy ]
   match '/signin',  to: 'sessions#new',     via: 'get'
   match '/signout', to: 'sessions#destroy', via: 'delete'
+
+
+  resources :match_subscriptions, only: [ :create, :destroy ]
+  match '/subscribe',   to: 'match_subscriptions#create',     via: 'get'
+  match '/unsubscribe', to: 'match_subscriptions#destroy', via: 'delete'
+  resources :match_subscriptions do
+    collection do
+      get :more_new # this routing is to be deleted since "Pridat dalsich" has been moved to match.show action
+      post :create_more
+    end
+  end
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

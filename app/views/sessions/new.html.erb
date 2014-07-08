@@ -1,19 +1,27 @@
-<% provide(:title, "Sign in") %>
-<h1>Sign in</h1>
+<script>
+  $(document).ready(function(){
+    ActivateTab('tab-player-name');
+  });
+</script>
 
-<div class="row">
-  <div class="span6 offset3">
+
+
+<% provide(:title, "Prihlásenie") %>
+<div class="jumbotron content">
+  <h2>Prihlásenie</h2>
+  <div class="caption-delimiter"></div>
     <%= form_for(:session, url: sessions_path) do |f| %>
-
-      <%= f.label :email %>
-      <%= f.text_field :email %>
-
-      <%= f.label :password %>
-      <%= f.password_field :password %>
-
-      <%= f.submit "Sign in", class: "btn btn-large btn-primary" %>
+      <p>
+        <%= f.label :email %>
+        <%= f.text_field :email %>
+      </p>
+      <p>
+        <%= f.label :password %>
+        <%= f.password_field :password %>
+      </p>
+      <p>
+        <%= f.submit "Prihlásiť sa", class: "btn btn-large btn-primary" %>
+      </p>
     <% end %>
-
-    <p>New user? <%= link_to "Sign up now!", signup_path %></p>
-  </div>
+    <p>Si tu nový? <%= link_to "Založ si svoj účet a hraj s nami!", signup_path %></p>
 </div>

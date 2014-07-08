@@ -1,0 +1,5 @@
+
+<%= form_for(current_user.match_subscriptions.find_by(match_id: @match.id), 
+          html: { method: :delete }) do |f| %>
+  <%= f.submit "Zrušiť účasť", class: "btn btn-large btn-primary un-subscribe" %>
+<% end %>

@@ -1,12 +1,18 @@
 class User < ActiveRecord::Base
 
+  # DB asociations -----------------
+  has_many :match_subscriptions, dependent: :destroy
+  has_many :matches, through: :match_subscriptions
+  # DB asociations ----------------- (end)
+
   before_save { self.email = email.downcase } # always lowercase the email before saving
   before_create :create_remember_token # create token when creating new user
 
   
   # Validations --------------------
   # name validation
-  validates :name,  presence: true, length: { maximum: 50 }
+  validates :firstname,  presence: true, length: { maximum: 50 }
+  validates :lastname,  presence: true, length: { maximum: 50 }
   
   # email validation
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -14,11 +20,42 @@ class User < ActiveRecord::Base
     format: { with: VALID_EMAIL_REGEX }, 
     uniqueness: { case_sensitive: false }
 
-  validates :password, presence: true, length: { minimum: 6 }
+  validates :password, presence: true, length: { minimum: 4 }, :if => :password
   # Validations -------------------- (end)
 
   
   has_secure_password # covers password management functionality
+
+
+  def fullname
+    fullname = self.lastname + " " + self.firstname
+    fullname += " #{self.name_suffix}" unless self.name_suffix.blank?
+
+    return fullname
+  end
+
+
+  def is_subscribed_to(match)
+    return !self.matches.find_by(id: match.id).nil?
+  end
+
+
+  # Evaluates whether this user can be subscribed to given match, returns true if so.
+  def can_be_subscribed_to(match)
+    
+    result = false # expect false
+    return result if match.nil?
+
+    found_match = self.matches.find_by(id: match.id) # search for this match in this user's matches
+    
+    if found_match.nil? # if not found
+      # Switch result to true, if no limit is specified or the limit has not been reached
+      result = true if match.max_num_of_players.nil? || match.users.count < match.max_num_of_players
+    end
+
+    return result
+  end
+
 
 
   # Token functionality ----------------------

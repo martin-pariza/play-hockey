@@ -1,11 +1,23 @@
-<% provide(:title, 'Sign up') %>
-<h1>Sign up</h1>
+<script>
+  $(document).ready(function(){
+    ActivateTab('tab-play-hockey');
+  });
+</script>
 
-<div class="row">
-  <div class="span6 offset3">
-    <%= form_for(@user) do |f| %>
-      <%= render 'fields', f: f %>
-      <%= f.submit "Create my account", class: "btn btn-large btn-primary" %>
-    <% end %>
-  </div>
+
+
+<% provide(:title, 'Nový účet') %>
+<%= link_to "Späť na hráčov", users_path, class: "btn btn-default back-link" %>
+<div class="jumbotron content">
+  <h2>Upraviť profil</h2>
+  <div class="caption-delimiter"></div>
+  <%= form_for(@user) do |f| %>
+    <%= render 'shared/error_messages', target: @user %>
+    <%= render 'fields', f: f %>
+    <%= render 'password_fields', f: f, password_hint: "" %>
+    <%= render 'additional_fields', f: f %>
+    <p>
+      <%= f.submit "Vytvoriť účet", class: "btn btn-large btn-primary" %>
+    </p>
+  <% end %>
 </div>

@@ -1,0 +1,10 @@
+<%= form_tag :controller => 'match_subscriptions', :action => 'create_more', :multipart => true do %>
+  <%= hidden_field_tag :match_id, @match.id %>
+  <% @available_players.each do |ap| %>
+    <%= check_box_tag("available_players[id][]", ap.id ) %>
+    <%= ap.fullname %><br />
+  <% end %>
+  <div class="actions">
+    <%= submit_tag("Submit") %> 
+  </div>
+<% end %>

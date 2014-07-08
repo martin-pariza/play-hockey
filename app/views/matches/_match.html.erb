@@ -1,0 +1,16 @@
+<li>
+  <p class='<%= "passed-match-item" if match.passed? %>'>
+    <%= link_to match.full_caption, match %>
+    <span class="badge">
+      <%= match.users.count %>
+    </span>
+    <% if signed_in? && current_user.admin? %>
+      | <%= link_to "upraviť", edit_match_path(match) %>
+      | <%= link_to "zrušiť", match_path(match), method: :delete,
+                                    data: { confirm: "Zrušiť zápas plánovaný na #{match.date_of_play.to_formatted_s(:rfc822)}?" } %>
+    <% end %>
+  </p>
+</li>
+<li>
+  <p class="item item-delimiter">• • •</p>
+</li>

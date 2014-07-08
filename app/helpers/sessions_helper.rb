@@ -18,8 +18,12 @@ module SessionsHelper
 
   # Sets a new @current_user in case it is nil currently.
   def current_user
-    remember_token = User.digest(cookies[:remember_token])
-    @current_user ||= User.find_by(remember_token: remember_token)
+    if @current_user.nil?
+      remember_token = User.digest(cookies[:remember_token])
+      @current_user = User.find_by(remember_token: remember_token)
+    end
+
+    return @current_user
   end
 
   

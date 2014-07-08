@@ -1,10 +1,22 @@
-<% provide(:title, 'All users') %>
-<h1>All users</h1>
+<script>
+  $(document).ready(function(){
+    ActivateTab('tab-players');
+  });
+</script>
 
-<%= will_paginate %> <!-- This covers bootstrap pagination, needed at beginning and end as well -->
 
-<ul class="users">
-  <%= render @users %> <!-- This automatically renders all users in @users using _user.html.erb partial -->
-</ul>
 
-<%= will_paginate %> <!-- This covers bootstrap pagination, needed at beginning and end as well -->
+
+<% provide(:title, 'Hráči') %>
+<div class="jumbotron content">
+  <h2>Registrovaní Hráči</h2>
+  <div class="caption-delimiter"></div>
+
+  <ul class="narrow">
+    <%= render @users %> <!-- This automatically renders all users in @users using _user.html.erb partial -->
+  </ul>
+
+  <div class="text-center">
+    <%= will_paginate %> <!-- This covers bootstrap pagination, needed at beginning and end as well -->
+  </div>
+</div>

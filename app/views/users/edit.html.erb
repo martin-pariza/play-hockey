@@ -1,14 +1,38 @@
-<% provide(:title, "Edit user") %>
-<h1>Update your profile</h1>
+<script>
+  function SetHiding() {
+    $('#show-change-password').click(function() {
+      $('#show-change-password').hide();
+      $('#change-password').slideToggle();
+      
+    });
+  }
 
-<div class="row">
-  <div class="span6 offset3">
-    <%= form_for(@user) do |f| %>
-      <%= render 'fields', f: f %>
-      <%= f.submit "Save changes", class: "btn btn-large btn-primary" %>
-    <% end %>
 
-    <%= gravatar_for @user %>
-    <a href="http://gravatar.com/emails">change</a>
-  </div>
+  $(document).ready(function(){
+    SetHiding();
+    ActivateTab('tab-player-name');
+  });
+</script>
+
+
+
+<% provide(:title, "Upraviť profil") %>
+<%= link_to "Späť na profil", user_path(@user), class: "btn btn-default back-link" %>
+<div class="jumbotron content">
+  <h2>Upraviť profil</h2>
+  <div class="caption-delimiter"></div>
+  <%= form_for(@user) do |f| %>
+    <%= render 'shared/error_messages', target: @user %>
+    <%= render 'fields', f: f %>
+    <%= render 'additional_fields', f: f %>
+    <div id="show-change-password" class="btn btn-default center-button">Zmeniť heslo</div>
+    <div id="change-password">
+      <%= render 'password_fields', f: f, 
+        password_hint: "Nechaj prázdne pre zachovanie súčasného hesla",
+        tooltip_text: "Nechaj prázdne pre zachovanie súčasného hesla" %>
+    </div>
+    <p>
+      <%= f.submit "Uložiť", class: "btn btn-large btn-primary" %>
+    </p>
+  <% end %>
 </div>

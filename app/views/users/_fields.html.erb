@@ -1,13 +1,16 @@
-<%= render 'shared/error_messages' %>
-
-<%= f.label :name %>
-<%= f.text_field :name %>
-
-<%= f.label :email %>
-<%= f.text_field :email %>
-
-<%= f.label :password %>
-<%= f.password_field :password %>
-
-<%= f.label :password_confirmation, "Confirm password" %>
-<%= f.password_field :password_confirmation %>
+<p>
+  <%= f.label :firstname, "Meno" %>
+  <%= f.text_field :firstname %>
+</p>
+<p>
+  <%= f.label :lastname, "Priezvisko" %>
+  <%= f.text_field :lastname %>
+</p>
+<p>
+  <%= f.label :name_suffix, "Za menom (napr. \"st.\")" %>
+  <%= f.text_field :name_suffix %>
+</p>
+<p>
+  <%= f.label :email %>
+  <%= f.text_field :email %>
+</p>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140623115105) do
+ActiveRecord::Schema.define(version: 20140708091953) do
 
   create_table "match_subscriptions", force: true do |t|
     t.integer  "user_id"
@@ -25,14 +25,12 @@ ActiveRecord::Schema.define(version: 20140623115105) do
     t.string   "name",               limit: 100
     t.string   "note",               limit: 200
     t.integer  "min_num_of_players"
-    t.integer  "max_num_of_players",             default: 12
-    t.boolean  "completed",                      default: false
+    t.integer  "max_num_of_players"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|
-    t.string   "name"
     t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -42,9 +40,10 @@ ActiveRecord::Schema.define(version: 20140623115105) do
     t.string   "firstname",       limit: 50
     t.string   "lastname",        limit: 50
     t.string   "name_suffix",     limit: 10
-    t.date     "year_of_birth"
+    t.integer  "year_of_birth"
     t.string   "residence",       limit: 100
     t.string   "phone_nr",        limit: 20
+    t.integer  "plays_since"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

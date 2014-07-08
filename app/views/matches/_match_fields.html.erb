@@ -1,0 +1,20 @@
+<p class="date-select">
+  <%= f.label :date_of_play, "Dátum" %>
+  <%= f.date_select :date_of_play, order: [:day, :month, :year], default: @next_sunday %>
+</p>
+<p>
+  <%= f.label :name, "Názov" %>
+  <%= f.text_field :name %>
+</p>
+<p>
+  <%= f.label :min_num_of_players, "Minimálny počet hráčov" %>
+  <%= f.text_field :min_num_of_players %>
+</p>
+<p>
+  <%= f.label :max_num_of_players, "Maximálny počet hráčov" %>
+  <%= f.text_field :max_num_of_players %>
+</p>
+<p>
+  <%= f.label :note, "Poznámka" %>
+  <%= f.text_area :note %>
+</p>

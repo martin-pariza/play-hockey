@@ -1,31 +1,36 @@
-<header class="navbar navbar-fixed-top navbar-inverse">
-  <div class="navbar-inner">
-    <div class="container">
-      <%= link_to "sample app", root_path, id: "logo" %>
-      <nav>
-        <ul class="nav pull-right">
-          <li><%= link_to "Home", root_path %></li>
-          <li><%= link_to "Help", help_path %></li>
-          <% if signed_in? %>
-            <li><%= link_to "Users", users_path %></li>
-            <li id="fat-menu" class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                Account <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-                <li><%= link_to "Profile", current_user %></li>
-                <li><%= link_to "Settings", edit_user_path(current_user) %></li>
-                <li class="divider"></li>
-                <li>
-                  <%= link_to "Sign out", signout_path, method: "delete" %>
+<header>
+
+  <div class="navigation-area">
+    <div class="container">  
+      <ul class="nav nav-tabs">
+        <li id="tab-play-hockey" class="active"><%= link_to "hrajhokej.sk", root_path %></li>
+        <li id="tab-matches"><%= link_to "Zápasy", matches_path %></li>
+        <li id="tab-players"><%= link_to "Hráči", users_path %></li>
+        <% if !signed_in? %>
+          <li id="tab-sign-in"><%= link_to "Prihlásiť sa", signin_path %></li>
+        <% else %>
+          <li id="tab-player-name" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              <%= "#{current_user.fullname}" %>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li id="tab-sign-out">
+                <%= link_to "Odhlásiť sa", signout_path, method: :delete %>
+              </li>
+              <li id="tab-edit-profile">
+                <%= link_to "Upraviť profil", edit_user_path(current_user) %>
+              </li>
+              <% if !current_user.admin? %>
+                <li id="tab-delete-profile">
+                  <%= link_to "Zrušiť profil", user_path(current_user), method: :delete, data: { confirm: "POZOR: zušenie profilu nie je možné vrátiť. Naozaj vymazať profil?" } %>
                 </li>
-              </ul>
-            </li>
-          <% else %>
-            <li><%= link_to "Sign in", signin_path %></li>
-          <% end %>
-        </ul>
-      </nav>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
     </div>
-  </div>
+  </div><!-- navigation-area -->
+
 </header>

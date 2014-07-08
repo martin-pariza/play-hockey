@@ -1,0 +1,9 @@
+
+<%= form_for(current_user.match_subscriptions.build(
+        user_id: current_user.id,
+        match_id: @match.id)
+) do |f| %>
+  <%= f.hidden_field :user_id %>
+  <%= f.hidden_field :match_id %>
+  <%= f.submit "Potvrdiť účasť", class: "btn btn-large btn-primary un-subscribe" %>
+<% end %>

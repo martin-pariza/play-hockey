@@ -1,0 +1,7 @@
+
+TODOs:
+
+- javascript, znemoznujuci pridat viac ako max_num_of_players
+
+- pri "edit" zapasu, ak zmeni max_players na menej ako je prihlasenych -> error
+- validacie na modeloch a before_actions

@@ -1,0 +1,133 @@
+<script>
+
+  function SetAddPlayersEvent() {
+    $('#show-unsubscribed-players').click(function() {
+      $('#show-unsubscribed-players').hide();
+      $('#unsubscribed-players').slideToggle();
+    });
+  }
+
+  function PlayerAdded() {
+    var chkBoxes = $('input[type=checkbox]');
+    var chkBoxesCheckedCount = chkBoxes.filter(':checked').length
+    var maxPlayersToAdd_span = $('#max-players-to-add');
+    var maxPlayersToAdd_hidden = $('#max-players-to-add-hidden');
+    var maxPlayersToAdd_label = $('#max-players-to-add-label');
+
+    if (!maxPlayersToAdd_hidden) {
+      return; // if there is no hidden field holding max_players_to_add, we don't need this
+    }
+
+    var maxToAddCount = parseInt(maxPlayersToAdd_hidden.val());
+    
+    chkBoxes.filter(':not(:checked)').prop('disabled', chkBoxesCheckedCount >= maxToAddCount);
+    maxPlayersToAdd_span.text(maxToAddCount - chkBoxesCheckedCount);
+    maxPlayersToAdd_label.text(maxToAddCount - chkBoxesCheckedCount == 1 ? 'hráča.' : 'hráčov.');
+  }
+
+  function SetPlayerAddedEvent() {
+    $('.added-player').change(function() {
+      PlayerAdded();
+    });
+  }
+
+
+  $(document).ready(function(){
+    ActivateTab('tab-matches');
+    SetAddPlayersEvent();
+    SetPlayerAddedEvent();
+  });
+</script>
+
+
+
+
+<% provide(:title, "Zápas #{@match.date_of_play.to_formatted_s(:rfc822)}") %>
+<%= link_to "Späť na zápasy", matches_path, class: "btn btn-default back-link" %>
+<div class="jumbotron content detail">
+  <h2><%= @match.full_caption %></h2>
+  <div class="caption-delimiter"></div>
+  <div class="detail-info">
+
+    <% if @match.passed? %>
+      <p class="red-sign">
+        Zápas už bol odohraný.
+      </p>
+    <% else %>
+      <% if current_user && current_user.is_subscribed_to(@match) %>
+        <%= render 'match_subscriptions/unsubscribe_form' %>
+      <% elsif current_user && current_user.can_be_subscribed_to(@match) %>
+        <%= render 'match_subscriptions/subscribe_form' %>
+      <% end %>
+      <p>
+        <span class="line-label">Minimálny počet hráčov </span><strong> • <%= @match.min_num_of_players.nil? ? "-" : @match.min_num_of_players %></strong><br/>
+        <span class="line-label">Maximálny počet hráčov </span><strong> • <%= @match.max_num_of_players.nil? ? "-" : @match.max_num_of_players %></strong>
+      </p>
+    <% end %>
+
+    <% unless @match.note.blank? %>
+      <p>
+        <span class="line-label">poznámka </span><strong> • <%= @match.note %></strong>
+      </p>
+    <% end %>
+  </div><!-- detail-info -->
+  <% if @match.users.count > 0 %>
+    <h4>
+      <% if @match.passed? %>
+        Zoznam zúčastnených
+      <% else %>
+        Zoznam prihlásených
+      <% end %>
+    </h4>
+    <div class="caption-delimiter"></div>
+    <ol>
+      <% @players.each do |p| %>
+        <li>
+          <p>
+            <% if current_user?(p) %>
+              <strong>
+            <% end %>
+            <%= link_to p.fullname, user_path(p.id) %>
+            <% if current_user?(p) %>
+              </strong>
+            <% end %>
+            <% if current_user && (current_user?(p) || current_user.admin?) %>
+              | <%= link_to "Zrušiť účasť", 
+                  match_subscription_path(get_match_subscription_id(p, @match)), 
+                  method: :delete, data: { confirm: "Naozaj vyradiť hráča #{p.fullname} zo zápasu?" } %>
+            <% end %>
+          </p>
+        </li>
+      <% end %>
+    </ol>
+  <% end %>
+  <% if current_user && current_user.admin? && @available_players.count > 0 && (@max_players_to_add > 0 || @max_players_to_add == -1) %> <!-- -1 means match.max_num_of_players is not specified -->
+    <button id="show-unsubscribed-players" class="btn btn-default center-button">Pridať ďalších</button>
+    <div id="unsubscribed-players">
+      <% if @max_players_to_add != -1 %>
+        <p>
+          Do tohto zápasu je možné pridať ešte
+          <%= hidden_field_tag "max-players-to-add-hidden", "#{@max_players_to_add}" %>
+          <span id="max-players-to-add">
+            <%= "#{@max_players_to_add}" %>
+          </span>
+          <span id="max-players-to-add-label">
+            <%= @max_players_to_add == 1 ? "hráča." : "hráčov." %>
+          </span>
+        </p>
+      <% end %>
+      <%= form_tag :controller => 'match_subscriptions', :action => 'create_more', :multipart => true do %>
+        <%= hidden_field_tag :match_id, @match.id %>
+        <% @available_players.each do |ap| %>
+          <p>
+            <%= check_box_tag("available_players[id][]", ap.id, false, class: "added-player") %>
+            <%= ap.fullname %><br />
+          </p>
+        <% end %>
+        <p>
+          <%= submit_tag "Pridať označených hráčov", class: "btn btn-primary center-button" %> 
+        </p>
+      <% end %>
+    </div><!-- unsubscribed-players -->
+  <% end %>
+</div><!-- detail-content -->

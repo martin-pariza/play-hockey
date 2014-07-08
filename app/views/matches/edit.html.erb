@@ -1,0 +1,21 @@
+<script>
+  $(document).ready(function(){
+    ActivateTab('tab-matches');
+  });
+</script>
+
+
+
+<% provide(:title, 'Upraviť zápas') %>
+<%= link_to "Späť na zápas", match_path(@match), class: "btn btn-default back-link" %>
+<div class="jumbotron content">
+  <h2>Upraviť zápas</h2>
+  <div class="caption-delimiter"></div>
+  <%= form_for(@match) do |f| %>
+    <%= render 'shared/error_messages', target: @match %>
+    <%= render 'match_fields', f: f %>
+    <p>
+      <%= f.submit "Uložiť", class: "btn btn-large btn-primary" %>
+    </p>
+  <% end %>
+</div>

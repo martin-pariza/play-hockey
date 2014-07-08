@@ -1,11 +1,52 @@
-<% provide(:title, @user.name) %>
-<div class="row">
-  <aside class="span4">
-    <section>
-      <h1>
-        <%= gravatar_for @user %>
-        <%= @user.name %>
-      </h1>
-    </section>
-  </aside>
-</div>
+<script>
+  $(document).ready(function(){
+    ActivateTab('tab-players');
+  });
+</script>
+
+
+
+<% provide(:title, @user.fullname) %>
+
+<%= link_to "Späť na hráčov", users_path, class: "btn btn-default back-link" %>
+<div class="jumbotron content detail">
+  <h2><%= @user.fullname %></h2>
+  <div class="caption-delimiter"></div>
+  <div class="detail-info">
+    <p class="center">
+      <% if @user.admin? %>
+        (administrator)<br/>
+      <% end %>
+      <span class="line-label">č. tel </span><strong> • <%= @user.phone_nr %></strong><br/>
+      <span class="line-label">email </span><strong> • <%= @user.email %></strong><br/>
+      <span class="line-label">rok nar. </span><strong> • <%= @user.year_of_birth %></strong><br/>
+      <% if !@user.plays_since.nil? %>
+        <span class="line-label">hrá od </span><strong> • <%= @user.plays_since %></strong><br/>
+      <% end %>
+      <span class="line-label">bydlisko </span><strong> • <%= @user.residence %></strong><br/>
+    </p>
+  </div><!-- detail-info -->
+  <% if @next_matches.count > 0 %>
+    <h4>Prihlásený na zápasy</h4>
+    <div class="caption-delimiter"></div>
+    <ul class="narrow">
+      <% @next_matches.each do |m| %>
+        <li>
+          <p><%= link_to m.full_caption, match_path(m.id) %></p>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+  <% if @past_matches.count > 0 %>
+    <h4>Odohraté zápasy</h4>
+    <div class="caption-delimiter"></div>
+    <ul class="narrow">
+      <% @past_matches.each do |m| %>
+        <li>
+          <p><%= link_to m.full_caption, match_path(m.id) %></p>
+        </li>
+      <% end %>
+    </ul>
+    <%= will_paginate @past_matches %>
+  <% end %>
+</div><!-- detail-content -->
