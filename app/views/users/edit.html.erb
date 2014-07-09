@@ -23,13 +23,13 @@
   <div class="caption-delimiter"></div>
   <%= form_for(@user) do |f| %>
     <%= render 'shared/error_messages', target: @user %>
-    <%= render 'fields', f: f %>
     <div id="show-change-password" class="btn btn-default center-button">Zmeniť heslo</div>
     <div id="change-password">
       <%= render 'password_fields', f: f, 
         password_hint: "Nechaj prázdne pre zachovanie súčasného hesla",
         tooltip_text: "Nechaj prázdne pre zachovanie súčasného hesla" %>
     </div>
+    <%= render 'fields', f: f %>
     <p>
       <%= f.submit "Uložiť", class: "btn btn-large btn-primary" %>
     </p>

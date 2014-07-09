@@ -245,7 +245,7 @@ h2 {
 .footer {
   border-top: 1px solid $iceBlue;
 
-  .footer-menu {
+  & .footer-menu {
     float: right;
 
     li {
@@ -254,8 +254,22 @@ h2 {
     }
   }
 
-  small {
+  & small {
     float: left;
+  }
+  
+  & #center-info {
+    content: "";
+    display: table;
+    clear: both;
+    margin: 0 auto;
+
+    & p {
+      color: grey;
+      text-align: center;
+      font-size: 11px;
+      border-top: 1px solid white;
+    }
   }
 }
 

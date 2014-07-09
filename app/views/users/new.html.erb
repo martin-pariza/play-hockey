@@ -6,17 +6,16 @@
 
 
 
-<% provide(:title, 'Nový účet') %>
-<%= link_to "Späť na hráčov", users_path, class: "btn btn-default back-link" %>
+<% provide(:title, 'Nový profil') %>
 <div class="jumbotron content">
-  <h2>Upraviť profil</h2>
+  <h2>Nový profil</h2>
   <div class="caption-delimiter"></div>
   <%= form_for(@user) do |f| %>
     <%= render 'shared/error_messages', target: @user %>
     <%= render 'fields', f: f %>
-    <%= render 'password_fields', f: f, password_hint: "" %>
+    <%= render 'password_fields', f: f, password_hint: "", tooltip_text: "" %>
     <p>
-      <%= f.submit "Vytvoriť účet", class: "btn btn-large btn-primary" %>
+      <%= f.submit "Vytvoriť profil", class: "btn btn-large btn-primary" %>
     </p>
   <% end %>
 </div>

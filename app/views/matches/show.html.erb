@@ -70,6 +70,9 @@
         <span class="line-label">poznámka </span><strong> • <%= @match.note %></strong>
       </p>
     <% end %>
+    <% if current_user && current_user.admin? %>
+      <%= link_to "Upraviť zápas", edit_match_path(@match.id), class: "btn btn-default center-button" %>
+    <% end %>
   </div><!-- detail-info -->
   <% if @match.users.count > 0 %>
     <h4>
@@ -91,7 +94,8 @@
             <% if current_user?(p) %>
               </strong>
             <% end %>
-            <% if current_user && (current_user?(p) || current_user.admin?) %>
+            <% if current_user && 
+              (((current_user?(p) && !@match.passed?) || current_user.admin?)) %>
               | <%= link_to "Zrušiť účasť", 
                   match_subscription_path(get_match_subscription_id(p, @match)), 
                   method: :delete, data: { confirm: "Naozaj vyradiť hráča #{p.fullname} zo zápasu?" } %>

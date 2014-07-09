@@ -24,6 +24,9 @@
       <span class="line-label">bydlisko </span><strong> • <%= @user.residence %></strong><br/>
     </p>
   </div><!-- detail-info -->
+  <% if current_user && current_user?(@user) || current_user.admin? %>
+    <%= link_to "Upraviť profil", edit_user_path(@user.id), class: "btn btn-default center-button" %>
+  <% end %>
   <% if @next_matches.count > 0 %>
     <h4>Prihlásený na zápasy</h4>
     <div class="caption-delimiter"></div>

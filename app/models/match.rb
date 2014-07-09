@@ -2,6 +2,7 @@ class Match < ActiveRecord::Base
 
   # Validations -------------------------
   validates :date_of_play, presence: true
+  validate :max_nr_of_players_not_under_subscribed
   # Validations ------------------------- (end)
 
   # DB asociations ------------------
@@ -20,4 +21,14 @@ class Match < ActiveRecord::Base
     full_caption += " - #{self.name}" if !self.name.blank?
     return full_caption
   end
+
+
+  private
+
+    def max_nr_of_players_not_under_subscribed
+      if max_num_of_players && max_num_of_players < self.users.count
+        errors[:base] << "Maximálny počet hráčov nesmie byť menší ako počet aktuálne prihlásených."
+      end
+    end
+
 end

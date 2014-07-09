@@ -15,13 +15,14 @@
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
+              <li id="tab-my-profile">
+                <%= link_to "Môj profil", user_path(current_user) %>
+              </li>
               <li id="tab-sign-out">
                 <%= link_to "Odhlásiť sa", signout_path, method: :delete %>
               </li>
-              <li id="tab-edit-profile">
-                <%= link_to "Upraviť profil", edit_user_path(current_user) %>
-              </li>
               <% if !current_user.admin? %>
+                <li class="divider"></li>
                 <li id="tab-delete-profile">
                   <%= link_to "Zrušiť profil", user_path(current_user), method: :delete, data: { confirm: "POZOR: zušenie profilu nie je možné vrátiť. Naozaj vymazať profil?" } %>
                 </li>

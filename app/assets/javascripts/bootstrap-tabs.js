@@ -1,17 +1,4 @@
 
-/*
-tab-play-hockey
-tab-matches
-tab-players
-if !signed_in?
-  tab-sign-in
-else
-  tab-player-name
-    tab-sign-out
-    tab-edit-profile
-    tab-delete-profile
-*/
-
 function ActivateTab(tabName) {
   // foreach tab -> remove "active" class
   // set "active" class for tabName
