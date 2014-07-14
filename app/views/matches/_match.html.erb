@@ -1,13 +1,16 @@
 <li>
   <p class='<%= "passed-match-item" if match.passed? %>'>
+    <% if match.category_id == 1 %>
+      <%= image_tag "/assets/match.png", alt: "Match icon", class: "match-icon" %>
+    <% end %>
     <%= link_to match.full_caption, match %>
-    <span class="badge">
+    <%= content_tag :span, class: (match.max_num_of_players && (match.users.count >= match.max_num_of_players)) ? "badge full" : "badge" do %>
       <%= match.users.count %>
-    </span>
+    <% end %>
     <% if signed_in? && current_user.admin? %>
       | <%= link_to "upraviť", edit_match_path(match) %>
       | <%= link_to "zrušiť", match_path(match), method: :delete,
-                                    data: { confirm: "Zrušiť zápas plánovaný na #{match.date_of_play.to_formatted_s(:rfc822)}?" } %>
+                                    data: { confirm: "Zrušiť stretnutie plánované na #{match.formatted_date}?" } %>
     <% end %>
   </p>
 </li>

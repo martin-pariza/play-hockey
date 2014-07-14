@@ -12,8 +12,11 @@
 <div class="jumbotron content">
   <h1>Vitajte na hokeji!</h1>
   <h4>Pozývam všetkých hokejových nadšencov aby si s nami zahrali hokej a spoznali náš tím.</h4>
-  <%= link_to "Chcem hrať !", signup_path, class: "btn btn-large btn-primary sign-up-button" %>
-  <% if !current_user %>
+  <% unless signed_in? %>
+    <%= link_to "Chcem hrať !", signup_path, class: "btn btn-large btn-primary sign-up-button" %>
+    
     <p>Máš už svoj profil? <%= link_to "Prihlás sa!", signin_path %></p>
+    
   <% end %>
+  <%= render "closest_events" %>
 </div>

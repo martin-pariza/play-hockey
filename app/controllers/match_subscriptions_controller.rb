@@ -7,13 +7,14 @@ class MatchSubscriptionsController < ApplicationController
 
 
 =end
-
+  before_action :sign_somebody_in
+  before_action :verify_account_active, only: [ :create ]
 
 
   def create
     match_subscription = MatchSubscription.new(match_subscription_params)
     if match_subscription.save
-      flash[:success] = "Prihlásenie na zápas bolo úspešné."
+      flash[:success] = "Prihlásenie na stretnutie bolo úspešné."
       redirect_to match_url(params[:match_subscription][:match_id])
     end
   end
@@ -26,9 +27,9 @@ class MatchSubscriptionsController < ApplicationController
     if match_subscription
       unsubscribed_match_id = match_subscription.match_id
       match_subscription.destroy
-      flash[:success] = "Odhlásenie zo zápasu bolo úspešné."
+      flash[:success] = "Odhlásenie zo stretnutia bolo úspešné."
     else
-      flash[:error] = "Odhlásenie zo zápasu sa nepodarilo."
+      flash[:error] = "Odhlásenie zo stretnutia sa nepodarilo."
     end
 
     if unsubscribed_match_id
@@ -66,7 +67,7 @@ class MatchSubscriptionsController < ApplicationController
       ms.user_id = nspid
       ms.match_id = match_id
       if ms.save
-        flash[:success] = "Vybraní hráči boli úspešne prihlásení na zápas."
+        flash[:success] = "Vybraní hráči boli úspešne prihlásení na stretnutie."
       else
         flash[:error] = "Chyba: hráčov sa nepodarilo prihlásiť."
         render 'more_new'
@@ -82,4 +83,15 @@ class MatchSubscriptionsController < ApplicationController
     def match_subscription_params
       params.require(:match_subscription).permit(:user_id, :match_id)
     end
+
+
+
+    def verify_account_active
+      user = User.find_by(id: params[:match_subscription][:user_id])
+      unless current_user.admin? || user.status_id == 2
+        flash[:error] = "Tento profil nie je aktívny."
+        redirect_to root_url
+      end
+    end
+
 end

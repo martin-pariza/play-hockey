@@ -1,0 +1,10 @@
+<% if user.status_id == 2 %>
+  <li>
+    <p>
+      <%= link_to user.fullname, user %>
+    </p>
+  </li>
+  <li>
+    <p class="item item-delimiter">• • •</p>
+  </li>
+<% end %>

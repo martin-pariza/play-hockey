@@ -1,0 +1,20 @@
+<% if user.status_id >= 2 %>
+  <li>
+    <p>
+      <% if user.status_id > 2 %>
+        (<%= user.status.name %>)
+      <% end %>
+      <%= link_to user.fullname, user %>
+      <% if current_user?(user) %>
+        | <%= link_to "upraviť", edit_user_path(user) %>
+        <% if !user.admin? %>
+          | <%= link_to "vymazať", user, method: :delete,
+                                      data: { confirm: "Vymazať hráča #{user.fullname}?" } %>
+        <% end %>
+      <% end %>
+    </p>
+  </li>
+  <li>
+    <p class="item item-delimiter">• • •</p>
+  </li>
+<% end %>

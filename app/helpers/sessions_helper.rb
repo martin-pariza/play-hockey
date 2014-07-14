@@ -58,6 +58,21 @@ module SessionsHelper
   end
 
 
+  # If there is no user signed in, this method redirects to sign-in page
+  # while it also stores the requested url location.
+  def sign_somebody_in
+    unless signed_in?
+      store_location
+      redirect_to signin_url, notice: "Na túto akciu je potrebné sa prihlásiť." 
+      # NOTE: notice: "Please sign in." is a shortcut parameter of redirect_to.
+      # It could be 
+      #  flash[:notice] = "Please sign in."
+      #  redirect_to signin_url
+      # too.
+    end
+  end
+
+
   # Stores location to go to from request to session for later use.
   # Applies only for get requests.
   def store_location

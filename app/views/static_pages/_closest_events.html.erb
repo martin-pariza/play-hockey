@@ -1,0 +1,23 @@
+<div id="closest-events">
+  <% if @closest_match %>
+    <p class="closest-event-caption">
+      Najbližší zápas
+    </p>
+    <p class="closest-match">
+      <%= link_to @closest_match.full_caption, match_path(@closest_match) %>
+    </p>
+  <% else %>
+    <p class="closest-event-caption grey">
+      Momentálne nie je naplánovaný žiadny zápas.
+    </p>
+  <% end %>
+  <% if @closest_training %>
+    <p class="closest-event-caption">
+      Tréning je <%= link_to @closest_training.formatted_date, match_path(@closest_training) %>
+    </p>
+  <% else %>
+    <p class="closest-event-caption grey">
+      Momentálne nie je naplánovaný žiadny tréning.
+    </p>
+  <% end %>
+</div>

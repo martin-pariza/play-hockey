@@ -6,16 +6,16 @@
 
 
 
-<% provide(:title, 'Nový zápas') %>
-<%= link_to "Späť na zápasy", matches_path, class: "btn btn-default back-link" %>
+<% provide(:title, 'Nové stretnutie') %>
+<%= link_to "Späť na stretnutia", matches_path, class: "btn btn-default back-link" %>
 <div class="jumbotron content">
-  <h2>Nový zápas</h2>
+  <h2>Nové stretnutie</h2>
   <div class="caption-delimiter"></div>
   <%= form_for(@match) do |f| %>
     <%= render 'shared/error_messages', target: @match %>
     <%= render 'match_fields', f: f %>
     <p>
-      <%= f.submit "Vytvoriť zápas", class: "btn btn-large btn-primary" %>
+      <%= f.submit "Vytvoriť stretnutie", class: "btn btn-large btn-primary" %>
     </p>
   <% end %>
 </div>

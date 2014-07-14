@@ -1,4 +1,14 @@
 namespace :db do
+  
+  desc "Create statuses"
+  task create_statuses: :environment do
+    Status.create!(name: "nový")
+    Status.create!(name: "aktívny")
+    Status.create!(name: "zablokovaný")
+  end
+
+
+
   desc "Create users"
   task create_users: :environment do
     User.create!(firstname: "Martin",
@@ -11,7 +21,8 @@ namespace :db do
                  admin: true,
                  residence: "Trstená",
                  year_of_birth: 1980,
-                 plays_since: 1990
+                 plays_since: 1990,
+                 status_id: 2
     )
     
     User.create!(firstname: "Tomáš",
@@ -24,7 +35,8 @@ namespace :db do
                  admin: false,
                  residence: "Topoľčany",
                  year_of_birth: 1980,
-                 plays_since: 1995
+                 plays_since: 1995,
+                 status_id: 2
     )
 
     User.create!(firstname: "Miloš",
@@ -37,7 +49,8 @@ namespace :db do
                  admin: false,
                  residence: "Sklené Teplice",
                  year_of_birth: 1980,
-                 plays_since: 1992
+                 plays_since: 1992,
+                 status_id: 2
     )
 
     User.create!(firstname: "Palo",
@@ -50,7 +63,8 @@ namespace :db do
                  admin: false,
                  residence: "Vranov n. Topľou",
                  year_of_birth: 1980,
-                 plays_since: 1998
+                 plays_since: 1998,
+                 status_id: 2
     )
 
     User.create!(firstname: "Michal",
@@ -63,25 +77,44 @@ namespace :db do
                  admin: false,
                  residence: "Trenčín",
                  year_of_birth: 1981,
-                 plays_since: 1994
+                 plays_since: 1994,
+                 status_id: 2
     )
 
   end
 
 
+  desc "Create categories"
+  task create_categories: :environment do
+    Category.create!(name: "zápas")
+    Category.create!(name: "tréning")
+  end
+
+  
+
   desc "Create matches"
   task create_matches: :environment do
     Match.create!(date_of_play: "2014-05-20",
+                  category_id: 1,
                   name: "Prvý zápas sezóny",
                   note: "",
                   min_num_of_players: 10,
                   max_num_of_players: 16
     )
 
-    Match.create!(date_of_play: "2014-06-16")
+    Match.create!(date_of_play: "2014-06-16",
+                  category_id: 2
+    )
     
 
+    Match.create!(date_of_play: "2014-07-20",
+                  category_id: 2,
+                  note: "Tréning na zápas o halušky.",
+                  min_num_of_players: 6
+    )
+
     Match.create!(date_of_play: "2014-07-23",
+                  category_id: 1,
                   name: "Zápas o halušky v Josu",
                   note: "",
                   min_num_of_players: 10,

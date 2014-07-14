@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   # DB asociations -----------------
   has_many :match_subscriptions, dependent: :destroy
   has_many :matches, through: :match_subscriptions
+  belongs_to :status
   # DB asociations ----------------- (end)
 
   before_save { self.email = email.downcase } # always lowercase the email before saving

@@ -3,6 +3,13 @@
   <%= f.date_select :date_of_play, order: [:day, :month, :year], default: @next_sunday %>
 </p>
 <p>
+  <%= f.radio_button(:category_id, 1, id: "category-match", class: "match-category") %>
+  <%= f.label(:category_id, @category_names[0].name.humanize, class: "radio-label") %>
+  <%= f.radio_button(:category_id, 2, id: "category-training", class: "match-category") %>
+  <%= f.label(:category_id, @category_names[1].name.humanize, class: "radio-label") %>
+</p>
+<div class="caption-delimiter"></div>
+<p>
   <%= f.label :name, "Názov" %>
   <%= f.text_field :name %>
 </p>

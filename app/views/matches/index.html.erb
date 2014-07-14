@@ -7,13 +7,13 @@
 
 
 
-<% provide(:title, 'Zápasy') %>
+<% provide(:title, 'Stretnutia') %>
 <% if current_user && current_user.admin? %>
-  <%= link_to "Naplánovať nový zápas", new_match_path, class: "btn btn-default back-link" %>
+  <%= link_to "Naplánovať nové stretnutie", new_match_path, class: "btn btn-default back-link" %>
 <% end %>
 <div class="jumbotron content">
   
-  <h2>Zápasy</h2>
+  <h2>Stretnutia</h2>
   <div class="caption-delimiter"></div>
   <ul class="wide">
     <%= render @matches %> <!-- This automatically renders all matches in @matches using _match.html.erb partial -->

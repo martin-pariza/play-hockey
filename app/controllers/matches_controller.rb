@@ -1,10 +1,12 @@
 class MatchesController < ApplicationController
 
-  before_action :verify_user_is_admin, only: [ :new, :create, :edit, :update, :destroy ]
+  
   
 
   def index
     @matches = Match.order(date_of_play: :desc).paginate(page: params[:page], per_page: 5)
+    @class_badge = "badge"
+    @class_badge_full = "badge full"
   end
 
 
@@ -35,13 +37,14 @@ class MatchesController < ApplicationController
     @match = Match.new
     now = DateTime.now
     @next_sunday = now + 7 - now.wday
+    @category_names = Category.all
   end
 
   
   def create
     @match = Match.new(match_params)
     if @match.save
-      flash[:success] = "Nový zápas bol vytvorený."
+      flash[:success] = "Nové stretnutie bolo úspešne vytvorené."
       redirect_to matches_url
     else
       render 'new'
@@ -51,11 +54,13 @@ class MatchesController < ApplicationController
 
   def edit
     @match = Match.find(params[:id])
+    @category_names = Category.all
   end
 
 
   def update
     @match = Match.find(params[:id])
+    @category_names = Category.all
     if @match.update_attributes(match_params)
       flash[:success] = "Zmeny sa úspešne uložili."
       redirect_to @match
@@ -67,7 +72,7 @@ class MatchesController < ApplicationController
 
   def destroy
     @match = Match.find(params[:id]).destroy
-    flash[:success] = "Zápas bol zrušený."
+    flash[:success] = "Stretnutie bolo zrušené."
     redirect_to matches_url
   end
 
@@ -80,7 +85,8 @@ class MatchesController < ApplicationController
         :name,
         :note,
         :min_num_of_players,
-        :max_num_of_players
+        :max_num_of_players,
+        :category_id
       )
     end
 

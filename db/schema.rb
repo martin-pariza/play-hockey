@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140708091953) do
+ActiveRecord::Schema.define(version: 20140712113931) do
+
+  create_table "categories", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "match_subscriptions", force: true do |t|
     t.integer  "user_id"
@@ -26,6 +32,15 @@ ActiveRecord::Schema.define(version: 20140708091953) do
     t.string   "note",               limit: 200
     t.integer  "min_num_of_players"
     t.integer  "max_num_of_players"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "category_id",                    default: 1
+  end
+
+  add_index "matches", ["category_id"], name: "index_matches_on_category_id"
+
+  create_table "statuses", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -44,6 +59,7 @@ ActiveRecord::Schema.define(version: 20140708091953) do
     t.string   "residence",       limit: 100
     t.string   "phone_nr",        limit: 20
     t.integer  "plays_since"
+    t.integer  "status_id",                   default: 1
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

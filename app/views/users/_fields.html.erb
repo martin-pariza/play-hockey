@@ -1,4 +1,12 @@
 <p>
+  <% if signed_in? && current_user.admin? %>
+    <%= f.label :status_id, "Stav profilu" %>
+    <%= f.select :status_id, @statuses.collect { |s| [ s.name, s.id ] }, { include_blank: false } %>
+  <% else %>
+    <%= f.hidden_field :status_id %>
+  <% end %>
+</p>
+<p>
   <%= f.label :email %>
   <%= f.text_field :email %>
 </p>

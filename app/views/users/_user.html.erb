@@ -1,16 +1,9 @@
-<li>
-  <p>
-    <%= link_to user.fullname, user %>
-    
-    <% if signed_in? && (current_user.admin? || current_user?(user)) %>
-          | <%= link_to "upraviť", edit_user_path(user) %>
-      <% if current_user.admin? && !user.admin? %>
-          | <%= link_to "vymazať", user, method: :delete,
-                                    data: { confirm: "Vymazať hráča #{user.fullname}?" } %>
-      <% end %>
-    <% end %>
-  </p>
-</li>
-<li>
-  <p class="item item-delimiter">• • •</p>
-</li>
+<% if signed_in? %>
+  <% if current_user.admin? %>
+    <%= render 'user_item_all_options', user: user %>
+  <% else %>
+    <%= render 'user_item', user: user %>
+  <% end %>
+<% else %>
+  <%= render 'user_item_public', user: user %>
+<% end %>

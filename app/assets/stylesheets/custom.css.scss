@@ -47,7 +47,7 @@ body {
   background-color: $contentBackgroundTransparent;
   margin: 20px 0;
   padding: 40px;
-  padding-bottom: 5px;
+  
   border-radius: 10px;
 
 
@@ -68,6 +68,16 @@ body {
     text-align: center;
   }
 
+
+  input[type="radio"] {
+    margin: 0 0 0 12px;
+  }
+
+  .radio-label {
+    display: inline-block;
+  }
+
+
   .caption-delimiter {
     width: 60%;
     border-bottom: 1px solid $iceBlue;
@@ -86,6 +96,43 @@ body {
     }
   }
 
+  
+  #closest-events {
+    margin: 80px auto 0 auto;
+    width: 70%;
+    padding: 10px;
+    border-top: 1px solid $iceBlue;
+    border-bottom: 1px solid $iceBlue;
+    font-weight: 500;
+    font-size: 16px;
+
+
+    .closest-event-caption {
+      text-align: left;
+      margin-top: 38px;
+      font-weight: inherit;
+      font-size: inherit;
+    }
+
+    .grey {
+      color: grey;
+      font-style: italic;
+      font-weight: inherit;
+      font-size: inherit;
+    }
+
+
+    .closest-match {
+      padding-left: 25px;
+      font-weight: 700;
+      text-align: left;
+      font-size: 22px;
+    }
+  }
+
+
+
+
   .passed-match-item a {
     color: grey;
   }
@@ -98,7 +145,7 @@ body {
 
   .sign-up-button {
     display: table;
-    margin: 60px auto;
+    margin: 60px auto 10px auto;
   }
 
   .line-label {
@@ -231,7 +278,7 @@ body {
 }
 
 .center-button {
-  margin: 0 auto;
+  margin: 4px auto;
   display: table;
 }
 
@@ -265,10 +312,15 @@ h2 {
     margin: 0 auto;
 
     & p {
-      color: grey;
+      color: darkblue;
       text-align: center;
       font-size: 11px;
       border-top: 1px solid white;
+
+      & a {
+        background-color: white;
+        padding: 1px 7px;
+      }
     }
   }
 }
@@ -278,6 +330,17 @@ h2 {
   color: red;
   font-style: italic;
 }
+
+
+.full {
+  background-color: red;
+}
+
+.match-icon {
+  height: 16px;
+  width: 16px;
+}
+
 
 /* Display settings for resolutions >=960px */
 @media screen and (min-width: 960px) {

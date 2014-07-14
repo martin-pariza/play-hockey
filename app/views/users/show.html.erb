@@ -17,6 +17,9 @@
       <% if @user.admin? %>
         (administrator)<br/>
       <% end %>
+      <% if @user.status_id != 2 %>
+        (<%= (@user.status.name) %>)<br/>
+      <% end %>
       <span class="line-label">email </span><strong> • <%= @user.email %></strong><br/>
       <span class="line-label">č. tel </span><strong> • <%= @user.phone_nr %></strong><br/>
       <span class="line-label">rok nar. </span><strong> • <%= @user.year_of_birth %></strong><br/>
@@ -28,7 +31,7 @@
     <%= link_to "Upraviť profil", edit_user_path(@user.id), class: "btn btn-default center-button" %>
   <% end %>
   <% if @next_matches.count > 0 %>
-    <h4>Prihlásený na zápasy</h4>
+    <h4>Momentálne prihlásený na</h4>
     <div class="caption-delimiter"></div>
     <ul class="narrow">
       <% @next_matches.each do |m| %>
@@ -39,7 +42,7 @@
     </ul>
   <% end %>
   <% if @past_matches.count > 0 %>
-    <h4>Odohraté zápasy</h4>
+    <h4>Zúčastnil sa na</h4>
     <div class="caption-delimiter"></div>
     <ul class="narrow">
       <% @past_matches.each do |m| %>
