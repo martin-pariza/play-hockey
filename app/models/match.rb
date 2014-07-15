@@ -36,6 +36,13 @@ class Match < ActiveRecord::Base
   end
 
 
+  def is_fully_occupied?
+    result = false
+    result = self.users.count >= self.max_num_of_players if self.max_num_of_players
+    return result
+  end
+
+
   private
 
     def nr_of_players

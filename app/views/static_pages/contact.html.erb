@@ -6,9 +6,12 @@
 
 
 
-<% provide(:title, 'Contact') %>
-<h1>Contact</h1>
-<p>
-  Contact Ruby on Rails Tutorial about the sample app at the
-  <a href="http://railstutorial.org/contact">contact page</a>.
-</p>
+<% provide(:title, 'Kontakt') %>
+<div class="jumbotron content">
+  <h2>Kontakt</h2>
+  <div class="caption-delimiter"></div>
+  <p>
+    Martin Paríža<br/>
+    <%= mail_to "martin.pariza@live.com" %> • +421 907 847 996 • <%= link_to image_tag("/assets/facebook.png"), "https://www.facebook.com/martin.pariza?fref=ts", target: "_blank" %>
+  </p>
+</div>

@@ -4,7 +4,7 @@
       <%= image_tag "/assets/match.png", alt: "Match icon", class: "match-icon" %>
     <% end %>
     <%= link_to match.full_caption, match %>
-    <%= content_tag :span, class: (match.max_num_of_players && (match.users.count >= match.max_num_of_players)) ? "badge full" : "badge" do %>
+    <%= content_tag :span, class: match.is_fully_occupied? ? "badge full" : "badge" do %>
       <%= match.users.count %>
     <% end %>
     <% if signed_in? && current_user.admin? %>

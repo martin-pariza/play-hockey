@@ -59,6 +59,8 @@
     <% else %>
       <% if current_user && current_user.is_subscribed_to(@match) %>
         <%= render 'match_subscriptions/unsubscribe_form' %>
+      <% elsif @match.is_fully_occupied? %>
+        <p class="red-sign">Stretnutie je plne obsadené.</p>
       <% elsif current_user && current_user.can_be_subscribed_to(@match) %>
         <%= render 'match_subscriptions/subscribe_form' %>
       <% end %>
