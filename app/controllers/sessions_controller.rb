@@ -16,7 +16,8 @@ class SessionsController < ApplicationController
     
     if user && user.authenticate(params[:session][:password])
       sign_in user
-      redirect_back_or matches_path
+      default_path = user.admin? ? users_path : matches_path
+      redirect_back_or default_path
     else
       flash.now[:error] = 'Neplatná kombinácia emailu a hesla.' # Not quite right!
       render 'new'
