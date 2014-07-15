@@ -90,6 +90,7 @@ class MatchSubscriptionsController < ApplicationController
       user = User.find_by(id: params[:match_subscription][:user_id])
       unless current_user.admin? || user.status_id == 2
         flash[:error] = "Tento profil nie je aktívny."
+        sign_out
         redirect_to root_url
       end
     end

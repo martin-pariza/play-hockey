@@ -43,10 +43,12 @@ module SessionsHelper
   # Additionally it changes user's remember token stored in DB (in case the cookie has been stolen)
   # and also deletes the cookie from users browser.
   def sign_out
-    current_user.update_attribute(:remember_token,
-                                  User.digest(User.new_remember_token))
-    cookies.delete(:remember_token)
-    self.current_user = nil
+    if signed_in?
+      current_user.update_attribute(:remember_token,
+                                    User.digest(User.new_remember_token))
+      cookies.delete(:remember_token)
+      self.current_user = nil
+    end
   end
 
 

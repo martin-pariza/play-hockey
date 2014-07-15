@@ -20,9 +20,15 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
+      flash[:success] = "Ďakujeme za vytvorenie profilu. Tento profil bude aktivovaný v priebehu niekoľkých hodín. Tu je zoznam našich stretnutí."
+
+=begin
       sign_in @user
       flash[:success] = "Vitaj v hokejovej lige! Tu si môžeš pozrieť zoznam stretnutí."
+=end
+      
       redirect_to matches_path
+
     else
       render 'new'
     end
@@ -106,9 +112,7 @@ class UsersController < ApplicationController
 
 
     def sign_out_current_user
-      if signed_in?
-        sign_out
-      end
+      sign_out
     end
 
 

@@ -35,6 +35,7 @@ class SessionsController < ApplicationController
       user = User.find_by(email: params[:session][:email])
       unless user && user.status_id == 2
         flash[:error] = "Tento profil nie je aktívny."
+        sign_out
         redirect_to root_url
       end
     end
