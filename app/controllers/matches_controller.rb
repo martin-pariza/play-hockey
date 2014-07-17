@@ -80,14 +80,17 @@ class MatchesController < ApplicationController
   private
 
     def match_params
-      params.require(:match).permit(
+      result = params.require(:match).permit(
         :date_of_play,
+        :time_of_play,
         :name,
         :note,
         :min_num_of_players,
         :max_num_of_players,
         :category_id
       )
+
+      return result
     end
 
 

@@ -20,6 +20,8 @@ class Match < ActiveRecord::Base
 
   def full_caption
     full_caption = self.formatted_date
+    full_caption += " • #{self.formatted_time}" if self.time_of_play
+    
     
     if self.category_id == 1
       full_caption += " - #{self.name}" unless self.name.blank?
@@ -33,6 +35,11 @@ class Match < ActiveRecord::Base
 
   def formatted_date
     return self.date_of_play.to_formatted_s(:rfc822)
+  end
+
+
+  def formatted_time
+    return self.time_of_play.to_formatted_s(:time) if self.time_of_play
   end
 
 

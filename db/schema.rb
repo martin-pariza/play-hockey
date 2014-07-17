@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140712113931) do
+ActiveRecord::Schema.define(version: 20140717130230) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20140712113931) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "category_id",                    default: 1
+    t.time     "time_of_play"
   end
 
   add_index "matches", ["category_id"], name: "index_matches_on_category_id"

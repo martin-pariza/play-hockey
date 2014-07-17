@@ -2,16 +2,9 @@
 TODOs:
 
 - approvaly na nove accounty
-  . tabulka "users" -> novy stlpec "status": 1/2/3 = poziadany/aktivny/zablokovany
-  . do _fields novy element: bud hidden_field nastaveny na value=0, alebo dropdown pre admina
   - na sign-in a na kazdu action dat before_action -> check ci je status=1
-  
 
-
-
-. ked prepne na "trening" -> disablovat nazov stretnutia (kedze trening je nazov)
-. odlisit nejak farebne zapasy a treningy v matches#index
-. cerveny badge ak je stretnutie plne
+- na "new", ked prepne na "trening" -> disablovat nazov stretnutia (kedze trening je nazov)
 - button "Prihlasit/Odhlasit sa" aj ked je signed-off -> redirect na sign-in
 - zamedzit curl na akciu show users/3
 
