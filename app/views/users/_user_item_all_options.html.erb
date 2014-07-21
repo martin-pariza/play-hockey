@@ -1,7 +1,9 @@
 <li>
   <p>
     <% if user.status_id != 2 %>
-      (<%= user.status.name %>)
+      <%= content_tag :span, class: user.status_id == 1 ? "user-status new" : "user-status disabled" do %>
+        (<%= user.status.name %>)
+      <% end %>
     <% end %>
     <%= link_to user.fullname, user %>
     | <%= link_to "upraviť", edit_user_path(user) %>

@@ -1,10 +1,19 @@
 
 TODOs:
 
+- email-notifications
+  - v sablone "matches/new" novy checkbox: "Upozornit vsetkych emailom na toto stretnutie"
+  - v controlleri "match/create" funkcionalita vyhodnocujuca checkbox -> email
+  - v sablone "matches/edit" novy checkbox: "Upozornit prihlasenych emailom na tuto zmenu"
+    a dalsi pod-checkbox "Upozornit ostatnych na tuto zmenu"
+  - javascript na enable/disable/uncheck druheho checkboxu -> podla stavu prveho
+  - v controlleri "user/create" -> poslat email admin userom ze sa regol novy profil
+  
+
+
 - approvaly na nove accounty
   - na sign-in a na kazdu action dat before_action -> check ci je status=1
 
-- na "new", ked prepne na "trening" -> disablovat nazov stretnutia (kedze trening je nazov)
 - button "Prihlasit/Odhlasit sa" aj ked je signed-off -> redirect na sign-in
 - zamedzit curl na akciu show users/3
 
