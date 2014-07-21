@@ -8,6 +8,10 @@
     $(".match-category").click(function() {
       SetFields();
     });
+
+    $("#send_notification_to_subscribed").click(function() {
+      SetFields();
+    });
   
   });
 </script>
@@ -22,6 +26,12 @@
   <%= form_for(@match) do |f| %>
     <%= render 'shared/error_messages', target: @match %>
     <%= render 'match_fields', f: f %>
+    <p>
+      <%= check_box_tag :send_notification_to_subscribed %>
+      Odoslať prihláseným notifikačný email o tejto zmene<br/>
+      <%= check_box_tag :send_notification_to_others %>
+      Odoslať aj ostatným
+    </p>
     <p>
       <%= f.submit "Uložiť", class: "btn btn-large btn-primary" %>
     </p>

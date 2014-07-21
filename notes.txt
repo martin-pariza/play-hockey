@@ -2,17 +2,22 @@
 TODOs:
 
 - email-notifications
-  - v sablone "matches/new" novy checkbox: "Upozornit vsetkych emailom na toto stretnutie"
-  - v controlleri "match/create" funkcionalita vyhodnocujuca checkbox -> email
-  - v sablone "matches/edit" novy checkbox: "Upozornit prihlasenych emailom na tuto zmenu"
+  . v sablone "matches/new" novy checkbox: "Upozornit vsetkych emailom na toto stretnutie"
+    . v controlleri "match/create" funkcionalita vyhodnocujuca checkbox -> email
+  . v controlleri "user/create" -> poslat email admin userom ze sa regol novy profil
+  . v sablone "matches/edit" novy checkbox: "Upozornit prihlasenych emailom na tuto zmenu"
     a dalsi pod-checkbox "Upozornit ostatnych na tuto zmenu"
-  - javascript na enable/disable/uncheck druheho checkboxu -> podla stavu prveho
-  - v controlleri "user/create" -> poslat email admin userom ze sa regol novy profil
-  
+  . javascript na enable/disable/uncheck druheho checkboxu -> podla stavu prveho
+  - v controlleri "user/update" -> poslat userovi mail
+  - email aj ked vznikne nove match_subscription
+
+
+- ? ked prepne status usera na iny ako "aktivny" je potrebne mu asi zrusit prihlasenia na zapasy
+- ked prepne status usera na iny ako "aktivny" -> mail
 
 
 - approvaly na nove accounty
-  - na sign-in a na kazdu action dat before_action -> check ci je status=1
+  - na sign-in a na kazdu action dat before_action -> check ci je status=2
 
 - button "Prihlasit/Odhlasit sa" aj ked je signed-off -> redirect na sign-in
 - zamedzit curl na akciu show users/3

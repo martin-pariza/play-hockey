@@ -22,9 +22,9 @@ class MatchesController < ApplicationController
     
     # Select players available to be added to this match
     if @match.users.count > 0
-      @available_players = User.where('id not in (?)', @match.users.ids)
+      @available_players = User.where('id not in (?)', @match.users.ids).where(status_id: 2)
     else
-      @available_players = User.all
+      @available_players = User.where(status_id: 2)
     end
 
 
@@ -43,11 +43,16 @@ class MatchesController < ApplicationController
   
   def create
     @match = Match.new(match_params)
+    notify_others = params[:send_notification]
+    
     if @match.save
       flash[:success] = "Nové stretnutie bolo úspešne vytvorené."
+      NotificationMailer.notify_new_match(@match).deliver if notify_others == "1"
       redirect_to matches_url
+    
     else
       render 'new'
+    
     end
   end
 
@@ -61,8 +66,12 @@ class MatchesController < ApplicationController
   def update
     @match = Match.find(params[:id])
     @category_names = Category.all
+    notify_subscribed = params[:send_notification_to_subscribed]
+    notify_others = params[:send_notification_to_others] == "1"
+
     if @match.update_attributes(match_params)
       flash[:success] = "Zmeny sa úspešne uložili."
+      NotificationMailer.notify_match_changed(@match, notify_others).deliver if notify_subscribed == "1"
       redirect_to @match
     else
       render 'edit'
@@ -71,8 +80,18 @@ class MatchesController < ApplicationController
 
 
   def destroy
-    @match = Match.find(params[:id]).destroy
-    flash[:success] = "Stretnutie bolo zrušené."
+    match = Match.find(params[:id])
+    match_name = match.full_caption
+    passed = match.passed?
+    subscribed_users = match.users.pluck(:email)
+
+    if match.destroy
+      flash[:success] = "Stretnutie bolo zrušené."
+      NotificationMailer.notify_match_cancelled(match_name, subscribed_users).deliver if !passed && subscribed_users.count > 0
+    else
+      flash[:error] = "Stretnutie sa nepodarilo zrušiť."
+    end
+    
     redirect_to matches_url
   end
 

@@ -21,6 +21,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       flash[:success] = "Ďakujeme za vytvorenie profilu. Tento profil bude aktivovaný v priebehu niekoľkých hodín. Tu je zoznam našich stretnutí."
+      NotificationMailer.notify_new_profile(@user).deliver
 
 =begin
       sign_in @user

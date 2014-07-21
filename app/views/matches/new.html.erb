@@ -23,6 +23,10 @@
     <%= render 'shared/error_messages', target: @match %>
     <%= render 'match_fields', f: f %>
     <p>
+      <%= check_box_tag :send_notification %>
+      Odoslať všetkým notifikačný email o tomto stretnutí
+    </p>
+    <p>
       <%= f.submit "Vytvoriť stretnutie", class: "btn btn-large btn-primary" %>
     </p>
   <% end %>
