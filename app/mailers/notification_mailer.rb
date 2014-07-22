@@ -41,4 +41,14 @@ class NotificationMailer < ActionMailer::Base
     mail(to: subscribed_users, subject: "Zrušenie plánovaného stretnutia na hrajhokej.sk") if subscribed_users.count > 0
   end
 
+
+  # Sends email to given player being subscribed or unsubscribed from/to a given match.
+  # Parameters:
+  #   user_id: id of player
+  #   match_id: id of match
+  #   is_being_subscribed: true when player is being subscribed, false if unsubscribed
+  def notify_match_subscription_change(user_id, match_id, is_being_subscribed)
+
+  end
+
 end

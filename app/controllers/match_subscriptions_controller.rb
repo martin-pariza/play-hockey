@@ -15,6 +15,13 @@ class MatchSubscriptionsController < ApplicationController
     match_subscription = MatchSubscription.new(match_subscription_params)
     if match_subscription.save
       flash[:success] = "Prihlásenie na stretnutie bolo úspešné."
+      
+      NotificationMailer.notify_match_subscription_change(
+            match_subscription.user_id, 
+            match_subscription.match_id, 
+            true
+      ).deliver
+      
       redirect_to match_url(params[:match_subscription][:match_id])
     end
   end
@@ -28,6 +35,7 @@ class MatchSubscriptionsController < ApplicationController
       unsubscribed_match_id = match_subscription.match_id
       match_subscription.destroy
       flash[:success] = "Odhlásenie zo stretnutia bolo úspešné."
+      NotificationMailer.notify_match_subscription_change(user_id, match_id, false)
     else
       flash[:error] = "Odhlásenie zo stretnutia sa nepodarilo."
     end
@@ -68,6 +76,12 @@ class MatchSubscriptionsController < ApplicationController
       ms.match_id = match_id
       if ms.save
         flash[:success] = "Vybraní hráči boli úspešne prihlásení na stretnutie."
+        NotificationMailer.notify_match_subscription_change(
+            ms.user_id, 
+            ms.match_id, 
+            true
+        ).deliver
+
       else
         flash[:error] = "Chyba: hráčov sa nepodarilo prihlásiť."
         render 'more_new'

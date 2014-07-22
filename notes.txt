@@ -10,10 +10,10 @@ TODOs:
   . javascript na enable/disable/uncheck druheho checkboxu -> podla stavu prveho
   - v controlleri "user/update" -> poslat userovi mail
   - email aj ked vznikne nove match_subscription
-
+  - ked prepne status usera na iny ako "aktivny" -> mail
 
 - ? ked prepne status usera na iny ako "aktivny" je potrebne mu asi zrusit prihlasenia na zapasy
-- ked prepne status usera na iny ako "aktivny" -> mail
+
 
 
 - approvaly na nove accounty
