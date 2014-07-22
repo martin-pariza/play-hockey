@@ -25,6 +25,9 @@ class User < ActiveRecord::Base
   # Validations -------------------- (end)
 
   
+  scope :admins, -> { where(admin: true) }
+
+
   has_secure_password # covers password management functionality
 
 

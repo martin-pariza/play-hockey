@@ -7,8 +7,8 @@ class NotificationMailer < ActionMailer::Base
   def notify_new_profile(user)
     @user = user
     
-    #admins = User.where(admin: true).pluck(:email)
-    admins = User.where(email: 'tomas.radic@gmail.com').pluck(:email) # temporary, later uncomment the line above
+    admins = User.admins.pluck(:email)
+    #admins = User.where(email: 'tomas.radic@gmail.com').pluck(:email) # temporary, later uncomment the line above
     
     mail(to: admins, subject: "Nový profil na hrajhokej.sk") if admins.count > 0
   end
