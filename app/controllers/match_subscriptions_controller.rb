@@ -27,25 +27,13 @@ class MatchSubscriptionsController < ApplicationController
   end
 
   def destroy
-    match_subscription = MatchSubscription.find_by(
-            id: params[:id]) # QUESTION: ako je mozne, ze tu nemozem pristupovat 
-                             # k params[:match_subscription][:match_id]  ???
+    match_subscription = MatchSubscription.find params[:id]
+    match_subscription.destroy
 
-    if match_subscription
-      unsubscribed_match_id = match_subscription.match_id
-      match_subscription.destroy
-      flash[:success] = "Odhlásenie zo stretnutia bolo úspešné."
-      NotificationMailer.notify_match_subscription_change(user_id, match_id, false)
-    else
-      flash[:error] = "Odhlásenie zo stretnutia sa nepodarilo."
-    end
+    flash[:success] = "Odhlásenie zo stretnutia bolo úspešné."
+    NotificationMailer.notify_match_subscription_change(match_subscription.user_id, match_subscription.match_id, false)
 
-    if unsubscribed_match_id
-      redirect_to match_url(unsubscribed_match_id)
-    else
-      redirect_to matches_url
-    end
-    
+    redirect_to match_url(match_subscription.match_id)
   end
 
 
