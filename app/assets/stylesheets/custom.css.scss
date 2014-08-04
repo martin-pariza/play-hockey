@@ -233,7 +233,13 @@ body {
     background-color: grey;
   }
 
-
+  & .email-options {
+    width: 60%;
+    margin: 0 auto;
+    & p {
+      text-align: left;
+    }
+  }
 } /* .content (end) */
 
 
@@ -283,10 +289,6 @@ body {
   }
 }
 
-
-.alert-success {
-  background-color: transparent;
-}
 
 .back-link {
   margin-top: 12px;
@@ -355,6 +357,13 @@ h2 {
   height: 16px;
   width: 16px;
 }
+
+
+/* For later use - image for email templates */
+/*#mail-header {
+  background-image: url("/assets/email-background.jpg");
+  padding: 12px;
+}*/
 
 
 /* Display settings for resolutions >=960px */

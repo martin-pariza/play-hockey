@@ -4,8 +4,14 @@
       <%= image_tag "/assets/match.png", alt: "Match icon", class: "match-icon" %>
     <% end %>
     <%= link_to match.full_caption, match %>
-    <%= content_tag :span, class: match.is_fully_occupied? ? "badge full" : "badge" do %>
-      <%= match.users.count %>
+    <% if match.max_num_of_players %>
+      <%= content_tag :span, class: match.is_fully_occupied? ? "badge full" : "badge" do %>
+        <%= match.users.count %>/<%= match.max_num_of_players %>
+      <% end %>
+    <% else %>
+      <%= content_tag :span, class: "badge" do %>
+        <%= match.users.count %>
+      <% end %>
     <% end %>
     <% if signed_in? && current_user.admin? %>
       | <%= link_to "upraviť", edit_match_path(match) %>

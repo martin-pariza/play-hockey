@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
   # DB asociations ----------------- (end)
 
   before_save { self.email = email.downcase } # always lowercase the email before saving
+  before_save { self.firstname = firstname.split.map(&:capitalize).join(' ') } # capitalize name
+  before_save { self.lastname = lastname.split.map(&:capitalize).join(' ') }
   before_create :create_remember_token # create token when creating new user
 
   
@@ -14,6 +16,8 @@ class User < ActiveRecord::Base
   # name validation
   validates :firstname,  presence: true, length: { maximum: 50 }
   validates :lastname,  presence: true, length: { maximum: 50 }
+  validates :year_of_birth, :numericality => { :greater_than => Date.today.year - 100, :less_than_or_equal_to => Date.today.year - 10 }
+  validates :plays_since, :numericality => { :greater_than_or_equal_to => :year_of_birth }
   
   # email validation
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
