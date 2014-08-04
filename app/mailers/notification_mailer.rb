@@ -1,6 +1,6 @@
 class NotificationMailer < ActionMailer::Base
   
-  default from: "notifikacie@hrajhokej.sk"
+  default from: "notifikacie.hrajhokej@gmail.com"
 
 
   # Sends email notifying new profile to all admin users
@@ -10,7 +10,9 @@ class NotificationMailer < ActionMailer::Base
     admins = User.admins.pluck(:email)
     #admins = User.where(email: 'tomas.radic@gmail.com').pluck(:email) # temporary, later uncomment the line above
     
-    mail(to: admins, subject: "Nový profil na hrajhokej.sk") if admins.count > 0
+    admins.each do |a|
+      mail(to: a, subject: "Nový profil na HK Slovan Trstená")
+    end
   end
 
 
@@ -19,7 +21,10 @@ class NotificationMailer < ActionMailer::Base
     @match = match
 
     active_users = User.where(status_id: 2).pluck(:email)
-    mail(to: active_users, subject: "Nové stretnutie na hrajhokej.sk") if active_users.count > 0
+
+    active_users.each do |au|
+      mail(to: au, subject: "Nové stretnutie HK Slovan Trstená")
+    end
   end
 
 
@@ -31,14 +36,20 @@ class NotificationMailer < ActionMailer::Base
     @match = match
     
     users_to_notify = notify_others ? User.where(status_id: 2).pluck(:email) : match.users.pluck(:email)
-    mail(to: users_to_notify, subject: "Zmena plánovaného stretnutia na hrajhokej.sk") if users_to_notify.count > 0
+    
+    users_to_notify.each do |utn|
+      mail(to: utn, subject: "Zmena plánovaného stretnutia HK Slovan Trstená")
+    end
   end
 
 
   # Sends email notifying cancellation of match to subscribed users.
   def notify_match_cancelled(match_name, subscribed_users)
     @match_name = match_name
-    mail(to: subscribed_users, subject: "Zrušenie plánovaného stretnutia na hrajhokej.sk") if subscribed_users.count > 0
+
+    subscribed_users.each do |su|
+      mail(to: subscribed_users, subject: "Zrušenie plánovaného stretnutia HK Slovan Trstená")
+    end
   end
 
 
@@ -47,8 +58,33 @@ class NotificationMailer < ActionMailer::Base
   #   user_id: id of player
   #   match_id: id of match
   #   is_being_subscribed: true when player is being subscribed, false if unsubscribed
-  def notify_match_subscription_change(user_id, match_id, is_being_subscribed)
+  def notify_match_subscription_change(user, match, is_being_subscribed)
+    @first_line = ""
+    @user = user
+    @match = match
+    
+    case is_being_subscribed
+      when true
+        @first_line = "Potvrdenie prihlásenia na stretnutie"
+      else
+        @first_line = "Potvrdenie odhlásenia zo stretnutia"
+    end
 
+    mail(to: user.email, subject: @first_line)
+  end
+
+
+  
+  def notify_profile_changed(user)
+    @user = user
+    mail(to: user.email, subject: "Zmena profilu hráča HK Slovan Trstená")
+  end
+
+
+  def notify_profile_deleted(name, email)
+    @name = name
+    @email = email
+    mail(to: email, subject: "Zrušenie profilu hráča HK Slovan Trstená")
   end
 
 end

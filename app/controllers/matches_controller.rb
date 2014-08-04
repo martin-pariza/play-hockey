@@ -46,8 +46,15 @@ class MatchesController < ApplicationController
     notify_others = params[:send_notification]
     
     if @match.save
-      flash[:success] = "Nové stretnutie bolo úspešne vytvorené."
-      NotificationMailer.notify_new_match(@match).deliver if notify_others == "1"
+      flash_message = "Nové stretnutie bolo úspešne vytvorené."
+      
+      begin
+        NotificationMailer.notify_new_match(@match).deliver if notify_others == "1"
+      rescue
+        flash_message += " Notifikačný email sa nepodarilo odoslať."
+      end
+
+      flash[:success] = flash_message
       redirect_to matches_url
     
     else
@@ -70,8 +77,15 @@ class MatchesController < ApplicationController
     notify_others = params[:send_notification_to_others] == "1"
 
     if @match.update_attributes(match_params)
-      flash[:success] = "Zmeny sa úspešne uložili."
-      NotificationMailer.notify_match_changed(@match, notify_others).deliver if notify_subscribed == "1"
+      flash_message = "Zmeny sa úspešne uložili."
+      
+      begin
+        NotificationMailer.notify_match_changed(@match, notify_others).deliver if notify_subscribed == "1"
+      rescue
+        flash_message += " Notifikačný email sa nepodarilo odoslať."
+      end
+
+      flash[:success] = flash_message
       redirect_to @match
     else
       render 'edit'
@@ -86,8 +100,17 @@ class MatchesController < ApplicationController
     subscribed_users = match.users.pluck(:email)
 
     if match.destroy
-      flash[:success] = "Stretnutie bolo zrušené."
-      NotificationMailer.notify_match_cancelled(match_name, subscribed_users).deliver if !passed && subscribed_users.count > 0
+      flash_message = "Stretnutie bolo zrušené."
+      
+      begin
+        NotificationMailer.notify_match_cancelled(match_name, subscribed_users).deliver if !passed && subscribed_users.count > 0
+      rescue
+        flash_message += " Notifikačný email sa nepodarilo odoslať."
+      end
+
+      flash[:success] = flash_message
+
+      
     else
       flash[:error] = "Stretnutie sa nepodarilo zrušiť."
     end
