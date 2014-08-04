@@ -4,7 +4,24 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h1>Zmena zápasu v hrajhokej.sk</h1>
-    <p>HTML email template, notify changed match.</p>
+    <!-- <div id="mail-header">
+      <h1>HK Slovan Trstená</h1>
+    </div> -->
+    <h2>Zmena stretnutia HK Slovan Trstená</h2>
+    <p>
+      <strong><%= @match.full_caption %></strong>
+    </p>
+    <p>
+      kategória: <%= @match.category.name %><br/>
+      max. počet zúčastnených: <%= @match.max_num_of_players ? @match.max_num_of_players.to_s : "-" %>
+      min. počet zúčastnených: <%= @match.min_num_of_players ? @match.min_num_of_players.to_s : "-" %>
+    </p>
+    <% unless @match.note.blank? %>
+      <p>
+        <i>@match.note</i>
+      </p>
+    <% end %>
   </body>
 </html>
+
+

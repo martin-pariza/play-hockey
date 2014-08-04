@@ -1,1 +1,16 @@
-Text email template, notify new profile.
+HK Slovan Trstená
+-----------------
+
+Nový profil v HK Slovan Trstená
+
+email: <%= @user.email %><br/>
+meno: <%= @user.firstname %><br/>
+priezvisko: <%= @user.lastname %><br/>
+<% unless @user.name_suffix.blank? %>
+  za menom: <%= @user.name_suffix %><br/>
+<% end %>
+
+rok nar.: <%= @user.year_of_birth %><br/>
+hrá od: <%= @user.plays_since %><br/>
+tel.: <%= @user.phone_nr %><br/>
+bydlisko: <%= @user.residence %><br/>

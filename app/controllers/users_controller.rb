@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
-  before_action :sign_somebody_in,             only: [:edit, :update, :destroy]
-  before_action :verify_user_now_signed_in,    only: [:edit, :update, :destroy]
+  before_action :sign_somebody_in,             only: [:update, :destroy]
+  before_action :verify_user_now_signed_in,    only: [:update, :destroy]
   #before_action :redirect_away_nonadmin_users, only: :destroy
   before_action :sign_out_current_user,        only: [ :new, :create ]
 
@@ -20,14 +20,15 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      flash[:success] = "Ďakujeme za vytvorenie profilu. Tento profil bude aktivovaný v priebehu niekoľkých hodín. Tu je zoznam našich stretnutí."
-      NotificationMailer.notify_new_profile(@user).deliver
-
-=begin
-      sign_in @user
-      flash[:success] = "Vitaj v hokejovej lige! Tu si môžeš pozrieť zoznam stretnutí."
-=end
+      flash_message = "Ďakujeme za vytvorenie profilu. Tento profil bude aktivovaný v priebehu niekoľkých hodín. Tu je zoznam našich stretnutí."
       
+      begin
+        NotificationMailer.notify_new_profile(@user).deliver
+      rescue
+        flash_message += " Notifikačný email sa nepodarilo odoslať."
+      end
+
+      flash[:success] = flash_message
       redirect_to matches_path
 
     else
@@ -47,7 +48,7 @@ class UsersController < ApplicationController
   def edit
     # Next line no more needed, commented out, due to @user variable is defined in
     # verify_user_now_signed_in method called right before edit action is fired (see before_action on the top)
-    #@user = User.find(params[:id])
+    @user = User.find(params[:id])
     @statuses = Status.all
   end
 
@@ -58,7 +59,15 @@ class UsersController < ApplicationController
     #@user = User.find(params[:id])
 
     if @user.update_attributes(user_params)
-      flash[:success] = "Profil bol upravený."
+      flash_message = "Profil bol upravený."
+      
+      begin
+        NotificationMailer.notify_profile_changed(@user).deliver
+      rescue
+        flash_message += " Notifikačný email sa nepodarilo odoslať."
+      end
+
+      flash[:success] = flash_message
       redirect_to @user
     else
       render 'edit'
@@ -67,8 +76,20 @@ class UsersController < ApplicationController
 
 
   def destroy
-    User.find(params[:id]).destroy
-    flash[:success] = "Profil bol vymazaný."
+    user = User.find(params[:id])
+    user_fullname = user.fullname
+    user_email = user.email
+    
+    user.destroy
+    flash_message = "Profil bol vymazaný."
+    
+    begin
+      NotificationMailer.notify_profile_deleted(user_fullname, user_email).deliver
+    rescue
+      flash_message += " Notifikačný email sa nepodarilo odoslať."
+    end
+
+    flash[:success] = flash_message
     redirect_to users_url
   end
 

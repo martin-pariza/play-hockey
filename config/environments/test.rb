@@ -33,4 +33,8 @@ Rails.application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
+
+
+  # ActionMailer Config
+  config.action_mailer.default_url_options = { :host => 'hkslovantrstena.sk' }
 end

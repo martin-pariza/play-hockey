@@ -1,0 +1,17 @@
+HK Slovan Trstená
+-----------------
+
+Zmena profilu v HK Slovan Trstená
+
+stav: <%= @user.status.name %>
+email: <%= @user.email %>
+meno: <%= @user.firstname %>
+priezvisko: <%= @user.lastname %>
+<% unless @user.name_suffix.blank? %>
+  za menom: <%= @user.name_suffix %>
+<% end %>
+
+rok nar.: <%= @user.year_of_birth %>
+hrá od: <%= @user.plays_since %>
+tel.: <%= @user.phone_nr %>
+bydlisko: <%= @user.residence %>
