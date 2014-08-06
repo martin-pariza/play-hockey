@@ -40,8 +40,8 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     
-    @next_matches = @user.matches.where('date_of_play > (?)', Date.current()).order(date_of_play: :desc)
-    @past_matches = @user.matches.where('date_of_play <= (?)', Date.current()).order(date_of_play: :desc).paginate(page: params[:page], per_page: 5)
+    @next_matches = @user.matches.where('date_of_play => (?)', Date.current()).order(date_of_play: :desc)
+    @past_matches = @user.matches.where('date_of_play < (?)', Date.current()).order(date_of_play: :desc).paginate(page: params[:page], per_page: 5)
   end
 
 
