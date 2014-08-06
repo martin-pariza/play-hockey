@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   validates :firstname,  presence: true, length: { maximum: 50 }
   validates :lastname,  presence: true, length: { maximum: 50 }
   validates :year_of_birth, :numericality => { :greater_than => Date.today.year - 100, :less_than_or_equal_to => Date.today.year - 10 }
-  validates :plays_since, :numericality => { :greater_than_or_equal_to => :year_of_birth }
+  validates :plays_since, :numericality => { :greater_than_or_equal_to => :year_of_birth }, :if => :year_of_birth
   
   # email validation
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
