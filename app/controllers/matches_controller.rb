@@ -43,17 +43,25 @@ class MatchesController < ApplicationController
   
   def create
     @match = Match.new(match_params)
-    notify_others = params[:send_notification]
-    
+    notify_users = params[:send_notification] == "1"
+
     if @match.save
       flash_message = "Nové stretnutie bolo úspešne vytvorené."
+      nr_of_delivery_errors = 0
       
-      begin
-        NotificationMailer.notify_new_match(@match).deliver if notify_others == "1"
-      rescue
-        flash_message += " Notifikačný email sa nepodarilo odoslať."
+      if notify_users
+        active_users = User.where(status_id: 2).pluck(:email)
+        
+        active_users.each do |au|
+          begin
+            NotificationMailer.notify_new_match(au, @match).deliver
+          rescue
+            nr_of_delivery_errors += 1
+          end
+        end
       end
 
+      flash_message += " Niektoré notifikačné emaily sa nepodarilo odoslať." if nr_of_delivery_errors > 0
       flash[:success] = flash_message
       redirect_to matches_url
     
@@ -73,16 +81,26 @@ class MatchesController < ApplicationController
   def update
     @match = Match.find(params[:id])
     @category_names = Category.all
-    notify_subscribed = params[:send_notification_to_subscribed]
+    notify_subscribed = params[:send_notification_to_subscribed] == "1"
     notify_others = params[:send_notification_to_others] == "1"
 
     if @match.update_attributes(match_params)
       flash_message = "Zmeny sa úspešne uložili."
-      
-      begin
-        NotificationMailer.notify_match_changed(@match, notify_others).deliver if notify_subscribed == "1"
-      rescue
-        flash_message += " Notifikačný email sa nepodarilo odoslať."
+
+      if notify_subscribed
+        nr_of_delivery_errors = 0
+        users_to_notify = notify_others ? User.where(status_id: 2).pluck(:email) : @match.users.pluck(:email)
+
+        users_to_notify.each do |utn|
+          begin
+            NotificationMailer.notify_match_changed(utn, @match).deliver
+          rescue
+            nr_of_delivery_errors += 1
+          end
+        end
+
+        flash_message += " Niektoré notifikačné emaily sa nepodarilo odoslať." if nr_of_delivery_errors > 0
+
       end
 
       flash[:success] = flash_message
@@ -102,15 +120,23 @@ class MatchesController < ApplicationController
     if match.destroy
       flash_message = "Stretnutie bolo zrušené."
       
-      begin
-        NotificationMailer.notify_match_cancelled(match_name, subscribed_users).deliver if !passed && subscribed_users.count > 0
-      rescue
-        flash_message += " Notifikačný email sa nepodarilo odoslať."
+      if !passed && subscribed_users.count > 0
+        nr_of_delivery_errors = 0
+      
+        subscribed_users.each do |su|
+          begin
+            NotificationMailer.notify_match_cancelled(su, match_name).deliver
+          rescue Exception => exc
+            nr_of_delivery_errors += 1
+          end
+        end
+
+        if nr_of_delivery_errors > 0
+          flash_message += " Niektoré notifikačné emaily sa nepodarilo odoslať." 
+        end
       end
 
       flash[:success] = flash_message
-
-      
     else
       flash[:error] = "Stretnutie sa nepodarilo zrušiť."
     end

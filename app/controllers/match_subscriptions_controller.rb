@@ -56,16 +56,17 @@ class MatchSubscriptionsController < ApplicationController
     match_id = params[:match_id]
     match = Match.find(match_id)
 
+    nr_of_delivery_errors = 0
+    nr_of_subscription_errors = 0
+
     new_subscribed_player_ids.each do |nspid|
-
+      
       player = User.find(nspid)
-
       ms = MatchSubscription.new
       ms.user_id = nspid
       ms.match_id = match_id
+
       if ms.save
-        flash_message = "Vybraní hráči boli úspešne prihlásení na stretnutie."
-        
         begin
           NotificationMailer.notify_match_subscription_change(
               player, 
@@ -73,17 +74,24 @@ class MatchSubscriptionsController < ApplicationController
               true
           ).deliver
         rescue
-          flash_message += " Notifikačný email sa nepodarilo odoslať."
+          nr_of_delivery_errors += 1
         end
-
-        flash[:success] = flash_message
-
       else
-        flash[:error] = "Chyba: hráčov sa nepodarilo prihlásiť."
-        render 'more_new'
+        nr_of_subscription_errors += 1
       end
     end
 
+    if nr_of_subscription_errors > 0
+      flash[:error] = "Počet hráčov, ktorých sa prihlásiť nepodarilo: #{nr_of_subscription_errors}"
+      render 'more_new'
+    end
+
+    flash_message = "Vybraní hráči boli úspešne prihlásení na stretnutie."
+    if nr_of_delivery_errors > 0
+      flash_message += " Niektoré notifikačné emaily sa nepodarilo odoslať."
+    end
+
+    flash[:success] = flash_message
     redirect_to match_path(match_id)
   end
 

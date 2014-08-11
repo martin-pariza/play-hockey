@@ -22,11 +22,19 @@ class UsersController < ApplicationController
     if @user.save
       flash_message = "Ďakujeme za vytvorenie profilu. Tento profil bude aktivovaný v priebehu niekoľkých hodín. Tu je zoznam našich stretnutí."
       
-      begin
-        NotificationMailer.notify_new_profile(@user).deliver
-      rescue
-        flash_message += " Notifikačný email sa nepodarilo odoslať."
+      nr_of_delivery_errors = 0
+      admins = User.admins.pluck(:email)
+
+      admins.each do |a|
+        begin
+          NotificationMailer.notify_new_profile(a, @user).deliver
+        rescue
+          nr_of_delivery_errors += 1
+        end
       end
+
+      flash_message += " Niektoré notifikačné emaily sa nepodarilo odoslať." if nr_of_delivery_errors > 0
+
 
       flash[:success] = flash_message
       redirect_to matches_path

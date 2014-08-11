@@ -4,27 +4,16 @@ class NotificationMailer < ActionMailer::Base
 
 
   # Sends email notifying new profile to all admin users
-  def notify_new_profile(user)
+  def notify_new_profile(recipient, user)
     @user = user
-    
-    admins = User.admins.pluck(:email)
-    #admins = User.where(email: 'tomas.radic@gmail.com').pluck(:email) # temporary, later uncomment the line above
-    
-    admins.each do |a|
-      mail(to: a, subject: "Nový profil na HK Slovan Trstená")
-    end
+    mail(to: recipient, subject: "Nový profil na HK Slovan Trstená")
   end
 
 
   # Sends email notifying new match to all active users
-  def notify_new_match(match)
+  def notify_new_match(recipient, match)
     @match = match
-
-    active_users = User.where(status_id: 2).pluck(:email)
-
-    active_users.each do |au|
-      mail(to: au, subject: "Nové stretnutie HK Slovan Trstená")
-    end
+    mail(to: recipient, subject: "Nové stretnutie HK Slovan Trstená")
   end
 
 
@@ -32,24 +21,16 @@ class NotificationMailer < ActionMailer::Base
   # Parameters:
   #   match: affected match
   #   notify_others: if value is 1, also users not subscribed to this match will be notified
-  def notify_match_changed(match, notify_others)
+  def notify_match_changed(recipient, match)
     @match = match
-    
-    users_to_notify = notify_others ? User.where(status_id: 2).pluck(:email) : match.users.pluck(:email)
-    
-    users_to_notify.each do |utn|
-      mail(to: utn, subject: "Zmena plánovaného stretnutia HK Slovan Trstená")
-    end
+    mail(to: recipient, subject: "Zmena plánovaného stretnutia HK Slovan Trstená")
   end
 
 
   # Sends email notifying cancellation of match to subscribed users.
-  def notify_match_cancelled(match_name, subscribed_users)
+  def notify_match_cancelled(recipient, match_name)
     @match_name = match_name
-
-    subscribed_users.each do |su|
-      mail(to: subscribed_users, subject: "Zrušenie plánovaného stretnutia HK Slovan Trstená")
-    end
+    mail(to: recipient, subject: "Zrušenie plánovaného stretnutia HK Slovan Trstená")
   end
 
 
