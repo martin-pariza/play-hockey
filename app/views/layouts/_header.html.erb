@@ -6,6 +6,8 @@
         <li id="tab-play-hockey" class="active"><%= link_to "Domov", root_path %></li>
         <li id="tab-matches"><%= link_to "Stretnutia", matches_path %></li>
         <li id="tab-players"><%= link_to "Hráči", users_path %></li>
+        <li id="tab-gallery" class="disabled"><%= link_to "Fotogaléria", "#" %></li>
+        <li id="tab-links" class="disabled"><%= link_to "Linky", "#" %></li>
         <% if !signed_in? %>
           <li id="tab-sign-in"><%= link_to "Prihlásiť sa", signin_path %></li>
         <% else %>

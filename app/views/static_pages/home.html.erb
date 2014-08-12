@@ -1,5 +1,18 @@
 <script>
+
+  function signupAreaMouseIn() {
+    $(".sign-up-button").text("Chcem hrať !");
+    $("#signin-link").css('color', '#ffffff');
+  }
+
+  function signupAreaMouseOut() {
+    $(".sign-up-button").text("Registrácia");
+    $("#signin-link").css('color', '#0088cc');
+  }
+
+
   $(document).ready(function(){
+    $("#signup-button-wrapper").hover(signupAreaMouseIn, signupAreaMouseOut);
     ActivateTab('tab-play-hockey');
   });
 </script>
@@ -10,13 +23,14 @@
 
 
 <div class="jumbotron content">
-  <h1>Vitajte na hokeji!</h1>
+  <h1>Vitajte na hokeji s HK Slovan Trstená!</h1>
   <h4>Pozývam všetkých hokejových nadšencov aby si s nami zahrali hokej a spoznali náš tím.</h4>
   <% unless signed_in? %>
-    <%= link_to "Chcem hrať !", signup_path, class: "btn btn-large btn-primary sign-up-button" %>
-    
-    <p>Máš už svoj profil? <%= link_to "Prihlás sa!", signin_path %></p>
-    
+    <div id="signup-button-wrapper">
+      <%= link_to "Registrácia", signup_path, class: "btn btn-large btn-primary sign-up-button" %>
+      
+      <p>Máš už svoj profil? <%= link_to "Prihlás sa!", signin_path, id: "signin-link" %></p>
+    </div>
   <% end %>
   <%= render "closest_events" %>
 </div>

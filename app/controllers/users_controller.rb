@@ -22,19 +22,20 @@ class UsersController < ApplicationController
     if @user.save
       flash_message = "Ďakujeme za vytvorenie profilu. Tento profil bude aktivovaný v priebehu niekoľkých hodín. Tu je zoznam našich stretnutí."
       
-      nr_of_delivery_errors = 0
-      admins = User.admins.pluck(:email)
+      if Settings.notification_emails_active
+        nr_of_delivery_errors = 0
+        admins = User.admins.pluck(:email)
 
-      admins.each do |a|
-        begin
-          NotificationMailer.notify_new_profile(a, @user).deliver
-        rescue
-          nr_of_delivery_errors += 1
+        admins.each do |a|
+          begin
+            NotificationMailer.notify_new_profile(a, @user).deliver
+          rescue
+            nr_of_delivery_errors += 1
+          end
         end
+
+        flash_message += " Niektoré notifikačné emaily sa nepodarilo odoslať." if nr_of_delivery_errors > 0
       end
-
-      flash_message += " Niektoré notifikačné emaily sa nepodarilo odoslať." if nr_of_delivery_errors > 0
-
 
       flash[:success] = flash_message
       redirect_to matches_path
@@ -68,11 +69,13 @@ class UsersController < ApplicationController
 
     if @user.update_attributes(user_params)
       flash_message = "Profil bol upravený."
-      
-      begin
-        NotificationMailer.notify_profile_changed(@user).deliver
-      rescue
-        flash_message += " Notifikačný email sa nepodarilo odoslať."
+
+      if Settings.notification_emails_active      
+        begin
+          NotificationMailer.notify_profile_changed(@user).deliver
+        rescue
+          flash_message += " Notifikačný email sa nepodarilo odoslať."
+        end
       end
 
       flash[:success] = flash_message
@@ -91,12 +94,14 @@ class UsersController < ApplicationController
     user.destroy
     flash_message = "Profil bol vymazaný."
     
-    begin
-      NotificationMailer.notify_profile_deleted(user_fullname, user_email).deliver
-    rescue
-      flash_message += " Notifikačný email sa nepodarilo odoslať."
+    if Settings.notification_emails_active
+      begin
+        NotificationMailer.notify_profile_deleted(user_fullname, user_email).deliver
+      rescue
+        flash_message += " Notifikačný email sa nepodarilo odoslať."
+      end
     end
-
+    
     flash[:success] = flash_message
     redirect_to users_url
   end

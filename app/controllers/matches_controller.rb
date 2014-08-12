@@ -47,9 +47,10 @@ class MatchesController < ApplicationController
 
     if @match.save
       flash_message = "Nové stretnutie bolo úspešne vytvorené."
-      nr_of_delivery_errors = 0
       
-      if notify_users
+      
+      if Settings.notification_emails_active && notify_users
+        nr_of_delivery_errors = 0
         active_users = User.where(status_id: 2).pluck(:email)
         
         active_users.each do |au|
@@ -59,9 +60,11 @@ class MatchesController < ApplicationController
             nr_of_delivery_errors += 1
           end
         end
+
+        flash_message += " Niektoré notifikačné emaily sa nepodarilo odoslať." if nr_of_delivery_errors > 0
       end
 
-      flash_message += " Niektoré notifikačné emaily sa nepodarilo odoslať." if nr_of_delivery_errors > 0
+      
       flash[:success] = flash_message
       redirect_to matches_url
     
@@ -87,7 +90,7 @@ class MatchesController < ApplicationController
     if @match.update_attributes(match_params)
       flash_message = "Zmeny sa úspešne uložili."
 
-      if notify_subscribed
+      if Settings.notification_emails_active && notify_subscribed
         nr_of_delivery_errors = 0
         users_to_notify = notify_others ? User.where(status_id: 2).pluck(:email) : @match.users.pluck(:email)
 
@@ -120,7 +123,7 @@ class MatchesController < ApplicationController
     if match.destroy
       flash_message = "Stretnutie bolo zrušené."
       
-      if !passed && subscribed_users.count > 0
+      if Settings.notification_emails_active && !passed && subscribed_users.count > 0
         nr_of_delivery_errors = 0
       
         subscribed_users.each do |su|

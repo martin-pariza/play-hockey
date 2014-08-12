@@ -19,10 +19,12 @@ class MatchSubscriptionsController < ApplicationController
       match = Match.where(id: match_subscription.match_id).first
       flash_message = "Prihlásenie na stretnutie bolo úspešné."
 
-      begin  
-        NotificationMailer.notify_match_subscription_change(user, match, true).deliver
-      rescue  
-        flash_message += " Notifikačný email sa nepodarilo odoslať."
+      if Settings.notification_emails_active
+        begin  
+          NotificationMailer.notify_match_subscription_change(user, match, true).deliver
+        rescue  
+          flash_message += " Notifikačný email sa nepodarilo odoslať."
+        end
       end
 
       flash[:success] = flash_message
@@ -37,11 +39,13 @@ class MatchSubscriptionsController < ApplicationController
     user = User.where(id: match_subscription.user_id).first
     match = Match.where(id: match_subscription.match_id).first
     flash_message = "Odhlásenie zo stretnutia bolo úspešné."
-    
-    begin
-      NotificationMailer.notify_match_subscription_change(user, match, false).deliver
-    rescue
-      flash_message += " Notifikačný email sa nepodarilo odoslať."
+
+    if Settings.notification_emails_active    
+      begin
+        NotificationMailer.notify_match_subscription_change(user, match, false).deliver
+      rescue
+        flash_message += " Notifikačný email sa nepodarilo odoslať."
+      end
     end
 
     flash[:success] = flash_message
@@ -67,14 +71,16 @@ class MatchSubscriptionsController < ApplicationController
       ms.match_id = match_id
 
       if ms.save
-        begin
-          NotificationMailer.notify_match_subscription_change(
-              player, 
-              match, 
-              true
-          ).deliver
-        rescue
-          nr_of_delivery_errors += 1
+        if Settings.notification_emails_active
+          begin
+            NotificationMailer.notify_match_subscription_change(
+                player, 
+                match, 
+                true
+            ).deliver
+          rescue
+            nr_of_delivery_errors += 1
+          end
         end
       else
         nr_of_subscription_errors += 1

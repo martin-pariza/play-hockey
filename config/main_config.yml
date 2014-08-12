@@ -1,0 +1,14 @@
+defaults: &defaults
+  example:
+    nested_setting: nested setting
+  notification_emails_active: true
+
+development:
+  <<: *defaults
+  notification_emails_active: false
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults
