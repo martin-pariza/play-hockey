@@ -8,5 +8,5 @@ kategória: <%= @match.category.name %><br/>
 max. počet zúčastnených: <%= @match.max_num_of_players ? @match.max_num_of_players.to_s : "-" %>
 min. počet zúčastnených: <%= @match.min_num_of_players ? @match.min_num_of_players.to_s : "-" %>
 <% unless @match.note.blank? %>
-  @match.note
+  <%= @match.note %>
 <% end %>
