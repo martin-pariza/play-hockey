@@ -12,21 +12,23 @@
 <div class="jumbotron content detail">
   <h2><%= @user.fullname %></h2>
   <div class="caption-delimiter"></div>
-  <div class="detail-info">
-    <p class="center">
-      <% if @user.admin? %>
-        (administrator)<br/>
-      <% end %>
-      <% if @user.status_id != 2 %>
-        (<%= (@user.status.name) %>)<br/>
-      <% end %>
-      <span class="line-label">email </span><strong> • <%= @user.email %></strong><br/>
-      <span class="line-label">č. tel </span><strong> • <%= @user.phone_nr %></strong><br/>
-      <span class="line-label">rok nar. </span><strong> • <%= @user.year_of_birth %></strong><br/>
-      <span class="line-label">hrá od </span><strong> • <%= @user.plays_since %></strong><br/>
-      <span class="line-label">bydlisko </span><strong> • <%= @user.residence %></strong><br/>
-    </p>
-  </div><!-- detail-info -->
+  <% if current_user %>
+    <div class="detail-info">
+      <p class="center">
+        <% if @user.admin? %>
+          (administrator)<br/>
+        <% end %>
+        <% if @user.status_id != 2 %>
+          (<%= (@user.status.name) %>)<br/>
+        <% end %>
+        <span class="line-label">email </span><strong> • <%= @user.email %></strong><br/>
+        <span class="line-label">č. tel </span><strong> • <%= @user.phone_nr %></strong><br/>
+        <span class="line-label">rok nar. </span><strong> • <%= @user.year_of_birth %></strong><br/>
+        <span class="line-label">hrá od </span><strong> • <%= @user.plays_since %></strong><br/>
+        <span class="line-label">bydlisko </span><strong> • <%= @user.residence %></strong><br/>
+      </p>
+    </div><!-- detail-info -->
+  <% end %>
   <% if current_user && (current_user?(@user) || current_user.admin?) %>
     <%= link_to "Upraviť profil", edit_user_path(@user.id), class: "btn btn-default center-button" %>
   <% end %>
