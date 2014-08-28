@@ -18,3 +18,5 @@
 # Ignore email credentials
 /config/local_env.yml
 
+# Ignore .idea folder
+/.idea
